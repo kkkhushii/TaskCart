@@ -1,0 +1,82 @@
+.css-2ulfj5-MuiTypography-root{
+    width: fit-content;
+    padding: 16px 24px;
+    margin: 16px 0px 0px;
+    font-size: 0.875rem !important;
+    font-family: __Plus_Jakarta_Sans_a182b8, __Plus_Jakarta_Sans_Fallback_a182b8, Helvetica, Arial, sans-serif !important;
+    line-height: 1.57 !important;
+    font-weight: 600 !important;
+}
+.css-mhc70k-MuiGrid-root{
+    background-color: rgb(236, 242, 255);
+    border-radius: 12.25px;
+    padding: 30px 25px 20px;
+    margin-bottom: 30px;
+    overflow: hidden;
+    box-sizing: border-box;
+    display: flex;
+    flex-flow: wrap;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    justify-content: space-between;
+}
+.MuiContainer-root{
+    margin-top: 30px;
+}
+.css-vj1n65-MuiGrid-root{
+    max-width: 66.6667%;
+    width: 100%;
+
+} 
+.css-37jdci-MuiTypography-root{
+  
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.334rem;
+    font-family: __Plus_Jakarta_Sans_a182b8, __Plus_Jakarta_Sans_Fallback_a182b8, Helvetica, Arial, sans-serif;
+    color: rgb(42, 53, 71);
+    -webkit-box-align: center;
+    padding:0;
+    margin: 10px 0px 0px;
+}
+.css-63vwl1-MuiTypography-root-MuiBreadcrumbs-root {
+    padding: 0;
+}
+
+a{
+    text-decoration:none !important;
+ 
+}
+img{
+    width: 165px;
+    height: 165px;
+}
+.MuiBox-root.css-0.IMG-box{
+    position: absolute;
+    right: 25px;
+    top: 0;
+}
+body{
+    color:rgb(42, 53, 71);
+}
+.css-1ps6pg7-MuiPaper-root{
+    background-color: rgb(255, 255, 255);
+    color: rgb(42, 53, 71);
+    transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    border-radius: 7px;
+    box-shadow: rgba(145, 158, 171, 0.3) 0px 0px 2px 0px, rgba(145, 158, 171, 0.12) 0px 12px 24px -4px;
+    overflow: hidden;
+    width: 100%;
+    background-image: none;
+    display: flex;
+    padding: 0px;
+}
+.MuiBox-root .css-0{
+    padding: 24px;
+    -webkit-box-flex: 1;
+    flex-grow: 1;
+}
+.MuiBox-root{
+    border-radius: 7px;
+}
