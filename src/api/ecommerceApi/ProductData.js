@@ -226,6 +226,43 @@ const ProductsData = [
 mock.onGet('/api/data/eCommerce/ProductsData').reply(() => {
   return [200, ProductsData];
 });
+// mock.onPost('/api/products/add').reply((config) => {
+//   const productData = JSON.parse(config.data);
+//   const newProduct = {
+//     id: Math.random().toString(36).substr(2, 9), 
+//     ...productData, 
+//   };
 
+//   return [200, { message: 'Product added successfully', product: newProduct }];
+// });
+
+let products = ProductsData;
+
+mock.onPost('/api/data/eCommerce/AddProduct').reply((config) => {
+  const { data } = config;
+  const newProduct = JSON.parse(data);
+
+  products.push(newProduct);
+  try {
+ 
+    localStorage.setItem('products', JSON.stringify(products));
+  } catch (error) {
+    console.error('Error saving products:', error);
+  }
+  return [200, newProduct];
+});
+
+// let products = ProductsData;
+
+// mock.onPost('/api/data/eCommerce/AddProduct').reply((config) => {
+//   const { data } = config;
+//   const newProduct = JSON.parse(data);
+
+//   // Add the new product to the products array
+//   products.push(newProduct);
+
+//   // Return the updated products list as the response
+//   return [200, products];
+// });
 
 export default ProductsData;

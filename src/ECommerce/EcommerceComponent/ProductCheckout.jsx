@@ -54,7 +54,7 @@ function ProductCheckout() {
                     <Box key={product.id} mb={2}>
                         <Grid container alignItems="center" >
                             <Grid item xs={3} mr={2}>
-                                <img src={product.photo} alt={product.name} style={{ width: "100%" }} />
+                                <img src={product.photo || product.image} alt={product.name} style={{ width: "100%" }} />
                             </Grid>
                             <Grid item xs={6}>
                                 <Typography variant="body1">{product.title}</Typography>

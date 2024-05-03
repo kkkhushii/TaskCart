@@ -15,7 +15,29 @@ const config = {
     loading: true,
     cart: [],
     showCheckout: false,
+    showProductAdd: false,
 }
+const loadState = () => {
+    try {
+        const serializedState = localStorage.getItem('products');
+        if (serializedState === null) {
+            return undefined;
+        }
+        return JSON.parse(serializedState);
+    } catch (err) {
+        return undefined;
+    }
+};
+
+const saveState = (state) => {
+    try {
+        const serializedState = JSON.stringify(state);
+        localStorage.setItem('products', serializedState);
+    } catch {
+        // Ignore write errors
+    }
+};
+
 
 export const ProductProvider = ({ children }) => {
     const [products, setProducts] = useState(config.products);
@@ -28,7 +50,12 @@ export const ProductProvider = ({ children }) => {
     const [loading, setLoading] = useState(config.loading);
     const [cart, setCart] = useState(config.cart);
     const [showCheckout, setShowCheckout] = useState(config.showCheckout);
+    const [showProductAdd, setShowProductAdd] = useState(config.showProductAdd);
+    const [newProducts, setNewProducts] = useState(loadState() || []);
 
+    useEffect(() => {
+        saveState(newProducts);
+    }, [newProducts]);
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -46,13 +73,9 @@ export const ProductProvider = ({ children }) => {
         fetchProducts();
     }, []);
 
-
-
     const removeFromCart = async (productId) => {
         setCart(cart.filter(item => item.id !== productId));
     };
-
-
 
     const filterProducts = (product) => {
         const matchesSearch = product.title.toLowerCase().includes(searchProduct.toLowerCase());
@@ -97,6 +120,17 @@ export const ProductProvider = ({ children }) => {
 
     const searchProducts = (searchText) => setSearchProduct(searchText);
 
+    const addProduct = async (newProduct) => {
+        try {
+            const response = await axios.post('/api/data/eCommerce/AddProduct', newProduct);
+            const addedProduct = response.data;
+            setProducts([...products, addedProduct]);
+        } catch (error) {
+            console.error('Error adding product:', error);
+        }
+    };
+
+
     const addToCart = (product) => {
         const existingProductIndex = cart.findIndex((item) => item.id === product.id);
         if (existingProductIndex !== -1) {
@@ -130,14 +164,18 @@ export const ProductProvider = ({ children }) => {
 
 
     const toggleCheckout = () => {
-        setShowCheckout(!showCheckout);
+        setShowCheckout(true);
+        setShowProductAdd(false);
+    };
+
+    const toggleProductAdd = () => {
+        setShowProductAdd(true);
+        setShowCheckout(false);
     };
 
 
-
-
     return (
-        <ProductContext.Provider value={{ products, searchProducts, updateSortBy, selectCategory, selectedCategory, showCheckout, incrementQuantity, decrementQuantity, removeFromCart, toggleCheckout, addToCart, loading, filteredAndSortedProducts, selectedColor, selectColor, setSelectedGender, updatePriceRange, selectGender, sortBy, priceRange, setPriceRange, cart }}>
+        <ProductContext.Provider value={{ products, searchProducts, newProducts, addProduct, showProductAdd, toggleProductAdd, updateSortBy, selectCategory, selectedCategory, showCheckout, incrementQuantity, decrementQuantity, removeFromCart, toggleCheckout, addToCart, loading, filteredAndSortedProducts, selectedColor, selectColor, setSelectedGender, updatePriceRange, selectGender, sortBy, priceRange, setPriceRange, cart }}>
             {children}
         </ProductContext.Provider>
     );

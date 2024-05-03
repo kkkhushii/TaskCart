@@ -9,18 +9,19 @@ import {
     Link
 } from '@mui/material'
 import ProductSearch from './ProductSearch'
-import { useContext, useState } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import { ProductContext } from '../../ContextApi/EcommerceContext'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import emptyCart from '../../assets/Products/empty-shopping-cart.svg';
-import ProductDetail from '../EcommerceComponent/ProductDetail'
+import ProductDetail from './ProductDetail';
+import NewProductAdd from './NewProductAdd';
 
 
+function ProductList() {
 
-function ProductList({ onProductSelect }) {
+    const { filteredAndSortedProducts, selectCategory, updateSortBy, updatePriceRange, selectGender, loading, newProducts, addToCart, products } = useContext(ProductContext);
+    const allProducts = [products, ...newProducts];
 
-    const { filteredAndSortedProducts, selectCategory, updateSortBy, updatePriceRange, selectGender, loading, addToCart } = useContext(ProductContext);
-    const [selectedProduct, setSelectedProduct] = useState(null);
 
     const handleResetFilters = () => {
         selectCategory('All');
@@ -31,14 +32,7 @@ function ProductList({ onProductSelect }) {
     const handleAddToCart = (product) => {
         addToCart(product);
     };
-    const handleProductSelect = (product) => {
-        setSelectedProduct(product);
-        onProductSelect(product);
-    };
 
-    if (selectedProduct) {
-        return <ProductDetail product={selectedProduct} />;
-    }
 
     return (
         <>
@@ -47,22 +41,17 @@ function ProductList({ onProductSelect }) {
                 <Box p={0}>
                     <ProductSearch />
                 </Box>
-
             </Stack>
             {loading ? (
-
                 <Typography variant="h6">Loading products...</Typography>
-
             ) : (
                 <Grid container spacing={3}>
                     {filteredAndSortedProducts && filteredAndSortedProducts.length > 0 ? (
                         <>
-                            {filteredAndSortedProducts.map((product) => (
+                            {filteredAndSortedProducts && allProducts.map((product) => (
                                 <Grid item xs={12} lg={4} md={4} sm={6} key={product.id}>
-                                    <Card >
-                                        <Link to={`/product/${product.id}`}>
-                                            <CardMedia component="img" width="100%" image={product.photo} alt="products" onClick={() => handleProductSelect(product)} />
-                                        </Link>
+                                    <Card>
+                                        <CardMedia component="img" width="100%" image={product.photo || product.image} alt="products" />
                                         <CardContent>
                                             <Box display="flex" justifyContent="space-between" alignItems="center">
                                                 <Typography variant="h6" p={0}>{product.title}</Typography>
@@ -100,8 +89,12 @@ function ProductList({ onProductSelect }) {
                             </Box>
                         </Grid>
                     )}
-                </Grid>
-            )}
+
+
+                </Grid >
+
+            )
+            }
 
         </>
 

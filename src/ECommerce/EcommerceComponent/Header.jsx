@@ -7,13 +7,20 @@ import image1 from '../../assets/ChatBc.png'
 import ProductCheckout from './ProductCheckout';
 import { ProductContext } from '../../ContextApi/EcommerceContext'
 import { useContext, useState } from 'react';
+import { Link } from 'react-router-dom';
+
 function Header() {
 
-    const { toggleCheckout } = useContext(ProductContext);
+    const { toggleCheckout, toggleProductAdd } = useContext(ProductContext);
 
-    const handleToggleCheckout = () => {
-        toggleCheckout();
-    };
+    // const handleToggleCheckout = () => {
+    //     toggleCheckout();
+    // };
+    // const handleToggleAdd = () => {
+    //     toggleProductAdd();
+    // }
+    // onClick={handleToggleCheckout}
+
 
     return (
         <Grid container spacing={2} >
@@ -27,6 +34,8 @@ function Header() {
                         <a href='/ecommerce'>
                             <Typography variant="p" component="p">Home</Typography>
                         </a>
+
+
                         <FiberManualRecordIcon sx={{ fontSize: 8 }} />
                         <a href='#'>
                             <Typography variant="p" component="p"> Shop</Typography>
@@ -34,8 +43,8 @@ function Header() {
                     </Breadcrumbs>
                 </Typography>
                 <Box sx={{ display: "flex", gap: "3px" }}>
-                    <Button variant="contained" color="primary" sx={{ marginTop: 1 }} onClick={handleToggleCheckout}>Add to Cart </Button>
-                    <Button variant="contained" color="primary" sx={{ marginTop: 1 }} >Add Products</Button>
+                    <Button variant="contained" color="primary" sx={{ marginTop: 1 }} onClick={toggleCheckout}>Add to Cart </Button>
+                    <Button variant="contained" color="primary" sx={{ marginTop: 1 }} onClick={toggleProductAdd}>Add Products</Button>
                     <Button variant="contained" color="primary" sx={{ marginTop: 1 }} >Edit Products</Button>
                 </Box>
 
