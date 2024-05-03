@@ -5,25 +5,39 @@ import {
     CardMedia,
     CardContent,
     Fab,
-    Card
+    Card,
+    Link
 } from '@mui/material'
 import ProductSearch from './ProductSearch'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { ProductContext } from '../../ContextApi/EcommerceContext'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import emptyCart from '../../assets/Products/empty-shopping-cart.svg';
-import LoopIcon from '@mui/icons-material/Loop';
+import ProductDetail from '../EcommerceComponent/ProductDetail'
 
 
-function ProductDetail() {
 
-    const { filteredAndSortedProducts, selectCategory, updateSortBy, updatePriceRange, selectGender, loading } = useContext(ProductContext);
+function ProductList({ onProductSelect }) {
+
+    const { filteredAndSortedProducts, selectCategory, updateSortBy, updatePriceRange, selectGender, loading, addToCart } = useContext(ProductContext);
+    const [selectedProduct, setSelectedProduct] = useState(null);
 
     const handleResetFilters = () => {
         selectCategory('All');
         updateSortBy('newest');
         updatePriceRange('All');
         selectGender('All');
+    }
+    const handleAddToCart = (product) => {
+        addToCart(product);
+    };
+    const handleProductSelect = (product) => {
+        setSelectedProduct(product);
+        onProductSelect(product);
+    };
+
+    if (selectedProduct) {
+        return <ProductDetail product={selectedProduct} />;
     }
 
     return (
@@ -45,14 +59,16 @@ function ProductDetail() {
                         <>
                             {filteredAndSortedProducts.map((product) => (
                                 <Grid item xs={12} lg={4} md={4} sm={6} key={product.id}>
-                                    <Card>
-                                        <CardMedia component="img" width="100%" image={product.photo} alt="products" />
+                                    <Card >
+                                        <Link to={`/product/${product.id}`}>
+                                            <CardMedia component="img" width="100%" image={product.photo} alt="products" onClick={() => handleProductSelect(product)} />
+                                        </Link>
                                         <CardContent>
                                             <Box display="flex" justifyContent="space-between" alignItems="center">
                                                 <Typography variant="h6" p={0}>{product.title}</Typography>
                                                 <Tooltip title="Add To Cart">
                                                     <Fab size="small" color="primary">
-                                                        <ShoppingCartIcon />
+                                                        <ShoppingCartIcon onClick={() => handleAddToCart(product)} > </ShoppingCartIcon>
                                                     </Fab>
                                                 </Tooltip>
                                             </Box>
@@ -71,6 +87,7 @@ function ProductDetail() {
                         </>
                     ) : (
                         <Grid item xs={12}>
+
                             <Box textAlign="center" mt={6}>
                                 <img src={emptyCart} alt="cart" width="200px" />
                                 <Typography variant="h2">There are no products</Typography>
@@ -83,12 +100,12 @@ function ProductDetail() {
                             </Box>
                         </Grid>
                     )}
-
                 </Grid>
             )}
+
         </>
 
     )
 }
 
-export default ProductDetail
+export default ProductList

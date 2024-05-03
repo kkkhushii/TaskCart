@@ -2,10 +2,19 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import image1 from '../../assets/ChatBc.png'
-
+import ProductCheckout from './ProductCheckout';
+import { ProductContext } from '../../ContextApi/EcommerceContext'
+import { useContext, useState } from 'react';
 function Header() {
+
+    const { toggleCheckout } = useContext(ProductContext);
+
+    const handleToggleCheckout = () => {
+        toggleCheckout();
+    };
+
     return (
         <Grid container spacing={2} >
             <Grid >
@@ -15,7 +24,7 @@ function Header() {
                 <Typography variant="h6" component="h6"> </Typography>
                 <Typography variant="nav" component="nav" className='nav-box'>
                     <Breadcrumbs aria-label="breadcrumb" separator="">
-                        <a href='#'>
+                        <a href='/ecommerce'>
                             <Typography variant="p" component="p">Home</Typography>
                         </a>
                         <FiberManualRecordIcon sx={{ fontSize: 8 }} />
@@ -24,10 +33,17 @@ function Header() {
                         </a>
                     </Breadcrumbs>
                 </Typography>
+                <Box sx={{ display: "flex", gap: "3px" }}>
+                    <Button variant="contained" color="primary" sx={{ marginTop: 1 }} onClick={handleToggleCheckout}>Add to Cart </Button>
+                    <Button variant="contained" color="primary" sx={{ marginTop: 1 }} >Add Products</Button>
+                    <Button variant="contained" color="primary" sx={{ marginTop: 1 }} >Edit Products</Button>
+                </Box>
+
             </Grid >
             <Box className="IMG-box">
                 <img src={image1} alt='breadcrumbImg' />
             </Box>
+
         </Grid >
     )
 }

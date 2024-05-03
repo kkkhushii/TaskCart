@@ -11,7 +11,6 @@ function Page() {
             <Box>
                 <Header />
                 <Home />
-
             </Box>
         </Container >
 

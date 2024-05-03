@@ -1,6 +1,6 @@
 import { TextField, InputAdornment } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import { useState, useContext } from 'react';
+import { useContext } from 'react';
 import { ProductContext } from '../../ContextApi/EcommerceContext'
 
 function ProductSearch() {
@@ -8,9 +8,7 @@ function ProductSearch() {
 
     const { searchProducts } = useContext(ProductContext);
 
-    const handleChange = (event) => {
-        searchProducts(event.target.value);
-    };
+
     return (
         <TextField
             variant="outlined"
@@ -18,7 +16,8 @@ function ProductSearch() {
             placeholder="Search Product"
             size="small"
             type="search"
-            onChange={handleChange}
+            onChange={(event) => searchProducts(event.target.value)}
+
             InputProps={{
                 startAdornment: (
                     <InputAdornment position="start">

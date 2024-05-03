@@ -6,27 +6,10 @@ import CheckIcon from '@mui/icons-material/Check';
 
 
 
-function ProductSidebar() {
+function ProductSidebar({ colors }) {
     const { selectCategory, sortBy, updateSortBy, updatePriceRange, priceRange, selectGender, selectedGender, selectColor, selectedCategory, selectedColor, products } = useContext(ProductContext);
 
-    const handleCategorySelect = (category) => {
-        selectCategory(category);
-    };
 
-    const handleSortBySelect = (sortBy) => {
-        updateSortBy(sortBy);
-    };
-
-    const handlePriceRangeSelect = (range) => {
-        updatePriceRange(range);
-    };
-    const handleGenderSelect = (gender) => {
-        selectGender(gender);
-        console.log(gender);
-    };
-    const handleColorSelect = (curColor) => {
-        selectColor(curColor)
-    }
     const handleResetFilters = () => {
         selectCategory('All');
         updateSortBy('newest');
@@ -95,7 +78,7 @@ function ProductSidebar() {
                     <ListItemButton
                         sx={{ mb: 1, mx: 3, borderRadius: '7px', backgroundColor: selectedCategory === filter.sort ? 'rgb(236, 242, 255)' : 'transparent', }}
                         key={filter.id}
-                        onClick={() => handleCategorySelect(filter.sort)}
+                        onClick={() => selectCategory(filter.sort)}
                     >
                         <ListItemIcon sx={{ minWidth: '30px' }}>
                             <filter.icon stroke="1.5" size="19" />
@@ -115,7 +98,7 @@ function ProductSidebar() {
                         <ListItemButton
                             sx={{ mb: 1, mx: 3, borderRadius: '7px', backgroundColor: sortBy === filter.value ? 'rgb(236, 242, 255)' : 'transparent', }}
                             key={filter.id}
-                            onClick={() => handleSortBySelect(filter.value)}
+                            onClick={() => updateSortBy(filter.value)}
 
                         >
                             <ListItemIcon sx={{ minWidth: '30px' }}>
@@ -141,13 +124,10 @@ function ProductSidebar() {
                             control={
                                 <Radio
                                     value={gen}
-                                    // checked={selectedGender === gen}
-                                    checked={selectedGender === 'Women'}
-
-                                    onClick={() => handleGenderSelect(gen)}
+                                    checked={selectedGender === gen}
+                                    onClick={() => selectGender(gen)}
 
                                 />
-
                             }
                             label={gen}
                         />
@@ -170,7 +150,7 @@ function ProductSidebar() {
                                 <Radio
                                     value={price.value}
                                     checked={priceRange === price.value}
-                                    onClick={() => handlePriceRangeSelect(price.value)}
+                                    onClick={() => updatePriceRange(price.value)}
                                 />
                             }
                             label={price.label}
@@ -200,7 +180,8 @@ function ProductSidebar() {
                                         cursor: 'pointer',
                                         borderRadius: '60px'
                                     }}
-                                    onClick={() => handleColorSelect(curColor)}
+                                    onClick={() => selectColor(curColor)}
+
                                     aria-label={curColor}
                                     key={curColor}
                                 >
@@ -213,7 +194,7 @@ function ProductSidebar() {
                         }
                     })}
                 </Stack>
-            </Box>
+            </Box >
             <Divider></Divider>
 
             {/* Reset button*/}

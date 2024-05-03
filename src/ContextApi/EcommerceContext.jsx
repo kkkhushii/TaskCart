@@ -4,15 +4,31 @@ import axios from 'axios'
 
 export const ProductContext = createContext();
 
+const config = {
+    products: [],
+    searchProduct: '',
+    selectedCategory: 'All',
+    sortBy: 'newest',
+    priceRange: 'All',
+    selectedGender: 'All',
+    selectedColor: 'All',
+    loading: true,
+    cart: [],
+    showCheckout: false,
+}
+
 export const ProductProvider = ({ children }) => {
-    const [products, setProducts] = useState([]);
-    const [searchProduct, setSearchProduct] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState('All');
-    const [sortBy, setSortBy] = useState('newest');
-    const [priceRange, setPriceRange] = useState('All');
-    const [selectedGender, setSelectedGender] = useState('All');
-    const [selectedColor, setSelectedColor] = useState('All');
-    const [loading, setLoading] = useState(true);
+    const [products, setProducts] = useState(config.products);
+    const [searchProduct, setSearchProduct] = useState(config.searchProduct);
+    const [selectedCategory, setSelectedCategory] = useState(config.selectedCategory);
+    const [sortBy, setSortBy] = useState(config.sortBy);
+    const [priceRange, setPriceRange] = useState(config.priceRange);
+    const [selectedGender, setSelectedGender] = useState(config.selectedGender);
+    const [selectedColor, setSelectedColor] = useState(config.selectedColor);
+    const [loading, setLoading] = useState(config.loading);
+    const [cart, setCart] = useState(config.cart);
+    const [showCheckout, setShowCheckout] = useState(config.showCheckout);
+
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -29,6 +45,13 @@ export const ProductProvider = ({ children }) => {
 
         fetchProducts();
     }, []);
+
+
+
+    const removeFromCart = async (productId) => {
+        setCart(cart.filter(item => item.id !== productId));
+    };
+
 
 
     const filterProducts = (product) => {
@@ -59,38 +82,62 @@ export const ProductProvider = ({ children }) => {
         }
     };
 
-
-
-    const selectCategory = (category) => {
-        setSelectedCategory(category);
-    };
-
-    const updateSortBy = (sortOption) => {
-        setSortBy(sortOption);
-    };
-
-    const updatePriceRange = (range) => {
-        setPriceRange(range);
-    };
-    const selectGender = (gender) => {
-        setSelectedGender(gender);
-    };
-    const selectColor = (color) => {
-        setSelectedColor(color);
-    };
-    const searchProducts = (searchText) => {
-        setSearchProduct(searchText);
-    };
-
-
     const filteredProducts = products.filter(filterProducts);
     const filteredAndSortedProducts = sortProducts(filteredProducts);
+
+    const selectCategory = (category) => setSelectedCategory(category);
+
+    const updateSortBy = (sortOption) => setSortBy(sortOption);
+
+    const updatePriceRange = (range) => setPriceRange(range);
+
+    const selectGender = (gender) => setSelectedGender(gender);
+
+    const selectColor = (color) => setSelectedColor(color);
+
+    const searchProducts = (searchText) => setSearchProduct(searchText);
+
+    const addToCart = (product) => {
+        const existingProductIndex = cart.findIndex((item) => item.id === product.id);
+        if (existingProductIndex !== -1) {
+
+            const updatedCart = [...cart];
+            updatedCart[existingProductIndex].quantity += 1;
+            setCart(updatedCart);
+        } else {
+            const productWithCategory = { ...product, categoryName: product.category, quantity: 1 };
+            setCart((prevCart) => [...prevCart, productWithCategory]);
+        }
+
+    };
+
+
+    const incrementQuantity = (productId) => {
+        setCart((prevCart) =>
+            prevCart.map((item) =>
+                item.id === productId ? { ...item, quantity: item.quantity + 1 } : item
+            )
+        );
+    };
+
+    const decrementQuantity = (productId) => {
+        setCart((prevCart) =>
+            prevCart.map((item) =>
+                item.id === productId ? { ...item, quantity: Math.max(1, item.quantity - 1) } : item
+            )
+        );
+    };
+
+
+    const toggleCheckout = () => {
+        setShowCheckout(!showCheckout);
+    };
 
 
 
 
     return (
-        <ProductContext.Provider value={{ products, searchProducts, selectCategory, selectedCategory, loading, filteredAndSortedProducts, selectedColor, selectColor, setSelectedGender, updateSortBy, updatePriceRange, selectGender, sortBy, priceRange, setPriceRange }}>
+        <ProductContext.Provider value={{ products, searchProducts, updateSortBy, selectCategory, selectedCategory, showCheckout, incrementQuantity, decrementQuantity, removeFromCart, toggleCheckout, addToCart, loading, filteredAndSortedProducts, selectedColor, selectColor, setSelectedGender, updatePriceRange, selectGender, sortBy, priceRange, setPriceRange, cart }}>
             {children}
         </ProductContext.Provider>
     );
