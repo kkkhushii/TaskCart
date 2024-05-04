@@ -6,21 +6,19 @@ import {
     CardContent,
     Fab,
     Card,
-    Link
+
 } from '@mui/material'
 import ProductSearch from './ProductSearch'
-import { useContext, useState, useEffect } from 'react'
+import { useContext } from 'react'
 import { ProductContext } from '../../ContextApi/EcommerceContext'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import emptyCart from '../../assets/Products/empty-shopping-cart.svg';
-import ProductDetail from './ProductDetail';
-import NewProductAdd from './NewProductAdd';
 
-
-function ProductList() {
+function ProductList({ onProductClick }) {
 
     const { filteredAndSortedProducts, selectCategory, updateSortBy, updatePriceRange, selectGender, loading, newProducts, addToCart, products } = useContext(ProductContext);
     const allProducts = [products, ...newProducts];
+
 
 
     const handleResetFilters = () => {
@@ -29,10 +27,6 @@ function ProductList() {
         updatePriceRange('All');
         selectGender('All');
     }
-    const handleAddToCart = (product) => {
-        addToCart(product);
-    };
-
 
     return (
         <>
@@ -47,17 +41,21 @@ function ProductList() {
             ) : (
                 <Grid container spacing={3}>
                     {filteredAndSortedProducts && filteredAndSortedProducts.length > 0 ? (
+
                         <>
-                            {filteredAndSortedProducts && allProducts.map((product) => (
+                            {filteredAndSortedProducts.map((product) => (
+
                                 <Grid item xs={12} lg={4} md={4} sm={6} key={product.id}>
                                     <Card>
-                                        <CardMedia component="img" width="100%" image={product.photo || product.image} alt="products" />
+
+                                        <CardMedia component="img" width="100%" image={product.photo || product.image} alt="products" onClick={() => onProductClick(product)} />
+
                                         <CardContent>
                                             <Box display="flex" justifyContent="space-between" alignItems="center">
                                                 <Typography variant="h6" p={0}>{product.title}</Typography>
                                                 <Tooltip title="Add To Cart">
                                                     <Fab size="small" color="primary">
-                                                        <ShoppingCartIcon onClick={() => handleAddToCart(product)} > </ShoppingCartIcon>
+                                                        <ShoppingCartIcon onClick={() => addToCart({ ...product, quantity: 1 })}> </ShoppingCartIcon>
                                                     </Fab>
                                                 </Tooltip>
                                             </Box>

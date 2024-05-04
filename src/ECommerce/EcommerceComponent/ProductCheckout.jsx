@@ -77,6 +77,7 @@ function ProductCheckout() {
 
                             <Grid item xs={2}>
                                 <Typography variant="body1"> ${product.price * product.quantity}</Typography>
+
                                 <Typography variant="body2" color="textSecondary">Quantity: {product.quantity}</Typography>
                             </Grid>
 

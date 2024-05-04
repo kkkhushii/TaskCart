@@ -1,5 +1,4 @@
 import { createContext, useState, useEffect } from 'react';
-import ProductsData from '../api/ecommerceApi/ProductData';
 import axios from 'axios'
 
 export const ProductContext = createContext();
@@ -16,28 +15,9 @@ const config = {
     cart: [],
     showCheckout: false,
     showProductAdd: false,
+    newProducts: [],
+    showList: false,
 }
-const loadState = () => {
-    try {
-        const serializedState = localStorage.getItem('products');
-        if (serializedState === null) {
-            return undefined;
-        }
-        return JSON.parse(serializedState);
-    } catch (err) {
-        return undefined;
-    }
-};
-
-const saveState = (state) => {
-    try {
-        const serializedState = JSON.stringify(state);
-        localStorage.setItem('products', serializedState);
-    } catch {
-        // Ignore write errors
-    }
-};
-
 
 export const ProductProvider = ({ children }) => {
     const [products, setProducts] = useState(config.products);
@@ -51,11 +31,8 @@ export const ProductProvider = ({ children }) => {
     const [cart, setCart] = useState(config.cart);
     const [showCheckout, setShowCheckout] = useState(config.showCheckout);
     const [showProductAdd, setShowProductAdd] = useState(config.showProductAdd);
-    const [newProducts, setNewProducts] = useState(loadState() || []);
-
-    useEffect(() => {
-        saveState(newProducts);
-    }, [newProducts]);
+    const [showList, setShowList] = useState(config.showList);
+    const [newProducts, setNewProducts] = useState(config.newProducts);
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -69,8 +46,15 @@ export const ProductProvider = ({ children }) => {
                 setLoading(false);
             }
         };
+        const storedProducts = localStorage.getItem('products');
+        if (storedProducts) {
+            setProducts(JSON.parse(storedProducts));
+            setLoading(false);
+        } else {
 
-        fetchProducts();
+            fetchProducts();
+        }
+
     }, []);
 
     const removeFromCart = async (productId) => {
@@ -120,32 +104,31 @@ export const ProductProvider = ({ children }) => {
 
     const searchProducts = (searchText) => setSearchProduct(searchText);
 
-    const addProduct = async (newProduct) => {
+
+    const addProduct = async (newProduct, category) => {
         try {
             const response = await axios.post('/api/data/eCommerce/AddProduct', newProduct);
-            const addedProduct = response.data;
-            setProducts([...products, addedProduct]);
+            const addedProduct = { ...response.data, category };
+            setProducts((prevProducts) => [...prevProducts, addedProduct]);
+            localStorage.setItem('products', JSON.stringify([...products, addedProduct]));
         } catch (error) {
             console.error('Error adding product:', error);
         }
     };
 
+    const addToCart = (productWithQuantity) => {
+        const { id, quantity } = productWithQuantity;
+        const existingProductIndex = cart.findIndex((item) => item.id === id);
 
-    const addToCart = (product) => {
-        const existingProductIndex = cart.findIndex((item) => item.id === product.id);
         if (existingProductIndex !== -1) {
-
             const updatedCart = [...cart];
-            updatedCart[existingProductIndex].quantity += 1;
+            updatedCart[existingProductIndex].quantity += (quantity || 1);
             setCart(updatedCart);
         } else {
-            const productWithCategory = { ...product, categoryName: product.category, quantity: 1 };
+            const productWithCategory = { ...productWithQuantity, categoryName: productWithQuantity.category, quantity: (quantity || 1) };
             setCart((prevCart) => [...prevCart, productWithCategory]);
         }
-
     };
-
-
     const incrementQuantity = (productId) => {
         setCart((prevCart) =>
             prevCart.map((item) =>
@@ -166,16 +149,23 @@ export const ProductProvider = ({ children }) => {
     const toggleCheckout = () => {
         setShowCheckout(true);
         setShowProductAdd(false);
+        setShowList(false);
     };
 
     const toggleProductAdd = () => {
         setShowProductAdd(true);
         setShowCheckout(false);
+        setShowList(false);
     };
+    const toggleListopen = () => {
+        setShowList(true);
+        setShowCheckout(false);
+        setShowProductAdd(false);
 
+    }
 
     return (
-        <ProductContext.Provider value={{ products, searchProducts, newProducts, addProduct, showProductAdd, toggleProductAdd, updateSortBy, selectCategory, selectedCategory, showCheckout, incrementQuantity, decrementQuantity, removeFromCart, toggleCheckout, addToCart, loading, filteredAndSortedProducts, selectedColor, selectColor, setSelectedGender, updatePriceRange, selectGender, sortBy, priceRange, setPriceRange, cart }}>
+        <ProductContext.Provider value={{ products, searchProducts, showList, toggleListopen, selectedCategory, newProducts, addProduct, showProductAdd, toggleProductAdd, updateSortBy, selectCategory, showCheckout, incrementQuantity, decrementQuantity, removeFromCart, toggleCheckout, addToCart, loading, filteredAndSortedProducts, selectedColor, selectColor, setSelectedGender, updatePriceRange, selectGender, sortBy, priceRange, setPriceRange, cart }}>
             {children}
         </ProductContext.Provider>
     );

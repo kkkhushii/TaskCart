@@ -11,15 +11,8 @@ import { Link } from 'react-router-dom';
 
 function Header() {
 
-    const { toggleCheckout, toggleProductAdd } = useContext(ProductContext);
+    const { toggleCheckout, toggleProductAdd, toggleListopen } = useContext(ProductContext);
 
-    // const handleToggleCheckout = () => {
-    //     toggleCheckout();
-    // };
-    // const handleToggleAdd = () => {
-    //     toggleProductAdd();
-    // }
-    // onClick={handleToggleCheckout}
 
 
     return (
@@ -46,6 +39,8 @@ function Header() {
                     <Button variant="contained" color="primary" sx={{ marginTop: 1 }} onClick={toggleCheckout}>Add to Cart </Button>
                     <Button variant="contained" color="primary" sx={{ marginTop: 1 }} onClick={toggleProductAdd}>Add Products</Button>
                     <Button variant="contained" color="primary" sx={{ marginTop: 1 }} >Edit Products</Button>
+                    <Button variant="contained" color="primary" sx={{ marginTop: 1 }} onClick={toggleListopen}>List</Button>
+
                 </Box>
 
             </Grid >

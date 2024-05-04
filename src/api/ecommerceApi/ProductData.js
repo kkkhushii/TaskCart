@@ -226,17 +226,9 @@ const ProductsData = [
 mock.onGet('/api/data/eCommerce/ProductsData').reply(() => {
   return [200, ProductsData];
 });
-// mock.onPost('/api/products/add').reply((config) => {
-//   const productData = JSON.parse(config.data);
-//   const newProduct = {
-//     id: Math.random().toString(36).substr(2, 9), 
-//     ...productData, 
-//   };
 
-//   return [200, { message: 'Product added successfully', product: newProduct }];
-// });
 
-let products = ProductsData;
+let products =  [...ProductsData];
 
 mock.onPost('/api/data/eCommerce/AddProduct').reply((config) => {
   const { data } = config;
