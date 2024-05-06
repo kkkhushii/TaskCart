@@ -12,11 +12,16 @@ import ProductEdit from '../EcommerceComponent/ProductEdit'
 function Home() {
     const { showCheckout, showProductAdd, products, showList, setSelectedProduct, selectedProduct, EditProducts } = useContext(ProductContext);
     // const [selectedProduct, setSelectedProduct] = useState(null);
+    const [selectedProductDetails, setSelectedProductDetails] = useState(null);
 
-    const handleProductClick = (product) => {
-        setSelectedProduct(product);
+    // const handleProductClick = (product) => {
+    //     setSelectedProduct(product);
+    // };
+    const handleProductClick = (productId, productDetails) => {
+        setSelectedProduct(productId); // Set the selected product ID
+        setSelectedProductDetails(productDetails);  // Set the selected product ID
+
     };
-
 
     return (
 
@@ -24,7 +29,7 @@ function Home() {
             {showProductAdd && <NewProductAdd />}
             {showCheckout && <ProductCheckout />}
             {showList && <ProductTableList />}
-            {EditProducts && <ProductEdit product={selectedProduct} onClose={() => setSelectedProduct(null)} />}
+            {EditProducts && <ProductEdit productId={selectedProduct} productDetails={selectedProductDetails} onClose={() => setSelectedProduct(null)} />}
 
             {(!showProductAdd && !showCheckout && !showList && !EditProducts) && (
                 <>
@@ -51,7 +56,8 @@ function Home() {
                         {!selectedProduct ? (
                             <ProductList products={products} onProductClick={handleProductClick} />
                         ) : (
-                            <ProductDetail product={selectedProduct} onClose={() => setSelectedProduct(null)} />
+                            // <ProductDetail product={selectedProduct} onClose={() => setSelectedProduct(null)} />
+                            <ProductDetail product={selectedProductDetails} onClose={() => setSelectedProduct(null)} />
                         )}
 
                     </Box>

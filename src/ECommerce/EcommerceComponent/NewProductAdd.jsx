@@ -6,6 +6,7 @@ function NewProductAdd() {
     const { addProduct, products } = useContext(ProductContext);
 
 
+
     const [formData, setFormData] = useState({
         title: '',
         description: '',
@@ -14,6 +15,8 @@ function NewProductAdd() {
         salesPrice: '',
         rating: 0,
         category: '',
+
+
     });
 
     const handleChange = (e) => {
@@ -34,9 +37,11 @@ function NewProductAdd() {
             salesPrice: '',
             rating: 0,
             category: '',
+
         });
 
     };
+
 
     return (
         <Box>
@@ -109,6 +114,7 @@ function NewProductAdd() {
                         }}
                     />
                 </Box>
+
                 <FormControl fullWidth>
                     <InputLabel id="category-label">Category</InputLabel>
                     <Select

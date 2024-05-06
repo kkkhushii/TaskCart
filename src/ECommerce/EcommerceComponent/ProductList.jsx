@@ -48,7 +48,7 @@ function ProductList({ onProductClick }) {
                                 <Grid item xs={12} lg={4} md={4} sm={6} key={product.id}>
                                     <Card>
 
-                                        <CardMedia component="img" width="100%" image={product.photo || product.image} alt="products" onClick={() => onProductClick(product)} />
+                                        <CardMedia component="img" width="100%" image={product.photo || product.image} alt="products" onClick={() => onProductClick(product.id, product)} />
 
                                         <CardContent>
                                             <Box display="flex" justifyContent="space-between" alignItems="center">

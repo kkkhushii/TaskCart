@@ -102,6 +102,9 @@ function ProductDetail({ product }) {
                 </Grid>
             </Grid>
         </Box >
+
+
+
     )
 }
 

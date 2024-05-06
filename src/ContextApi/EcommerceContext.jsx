@@ -18,6 +18,7 @@ const config = {
     newProducts: [],
     showList: false,
     EditProducts: false,
+    selectedProduct: null,
 }
 
 export const ProductProvider = ({ children }) => {
@@ -35,7 +36,6 @@ export const ProductProvider = ({ children }) => {
     const [showList, setShowList] = useState(config.showList);
     const [newProducts, setNewProducts] = useState(config.newProducts);
     const [EditProducts, setEditProducts] = useState(config.EditProducts);
-
     const [selectedProduct, setSelectedProduct] = useState(null);
 
 
@@ -61,6 +61,8 @@ export const ProductProvider = ({ children }) => {
         }
 
     }, []);
+
+
 
     const removeFromCart = async (productId) => {
         setCart(cart.filter(item => item.id !== productId));
@@ -121,6 +123,45 @@ export const ProductProvider = ({ children }) => {
         }
     };
 
+    const updateProduct = (productId, updatedProductData) => {
+
+        setProducts((prevProducts) =>
+            prevProducts.map((product) =>
+                product.id === productId ? { ...product, ...updatedProductData } : product
+            )
+        );
+        localStorage.setItem('products', JSON.stringify(updatedProductData));
+    };
+
+
+    // const editProduct = async (updatedProductData) => {
+    //     try {
+
+    //         console.log('Updated product data:', updatedProductData);
+
+
+    //         const response = await axios.post('/api/data/eCommerce/EditProduct', updatedProductData);
+    //         const updatedProduct = response.data;
+    //         console.log(response);
+
+    //         setProducts((prevProducts) => {
+    //             return prevProducts.map((product) => {
+    //                 if (product.id === updatedProduct.id) {
+    //                     return updatedProduct;
+    //                 } else {
+    //                     return product;
+    //                 }
+    //             });
+    //         });
+
+    //     } catch (error) {
+    //         console.error('Error editing product:', error);
+    //     }
+    // };
+
+
+
+
     const addToCart = (productWithQuantity) => {
         const { id, quantity } = productWithQuantity;
         const existingProductIndex = cart.findIndex((item) => item.id === id);
@@ -134,6 +175,8 @@ export const ProductProvider = ({ children }) => {
             setCart((prevCart) => [...prevCart, productWithCategory]);
         }
     };
+
+
     const incrementQuantity = (productId) => {
         setCart((prevCart) =>
             prevCart.map((item) =>
@@ -180,7 +223,7 @@ export const ProductProvider = ({ children }) => {
     }
 
     return (
-        <ProductContext.Provider value={{ products, toogleEditopen, EditProducts, setEditProducts, setSelectedProduct, selectedProduct, searchProducts, showList, toggleListopen, selectedCategory, newProducts, addProduct, showProductAdd, toggleProductAdd, updateSortBy, selectCategory, showCheckout, incrementQuantity, decrementQuantity, removeFromCart, toggleCheckout, addToCart, loading, filteredAndSortedProducts, selectedColor, selectColor, setSelectedGender, updatePriceRange, selectGender, sortBy, priceRange, setPriceRange, cart }}>
+        <ProductContext.Provider value={{ products, toogleEditopen, EditProducts, updateProduct, setEditProducts, setSelectedProduct, selectedProduct, searchProducts, showList, toggleListopen, selectedCategory, newProducts, addProduct, showProductAdd, toggleProductAdd, updateSortBy, selectCategory, showCheckout, incrementQuantity, decrementQuantity, removeFromCart, toggleCheckout, addToCart, loading, filteredAndSortedProducts, selectedColor, selectColor, setSelectedGender, updatePriceRange, selectGender, sortBy, priceRange, setPriceRange, cart }}>
             {children}
         </ProductContext.Provider>
     );

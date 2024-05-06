@@ -236,7 +236,6 @@ mock.onPost('/api/data/eCommerce/AddProduct').reply((config) => {
 
   products.push(newProduct);
   try {
- 
     localStorage.setItem('products', JSON.stringify(products));
   } catch (error) {
     console.error('Error saving products:', error);
@@ -244,17 +243,27 @@ mock.onPost('/api/data/eCommerce/AddProduct').reply((config) => {
   return [200, newProduct];
 });
 
-// let products = ProductsData;
 
-// mock.onPost('/api/data/eCommerce/AddProduct').reply((config) => {
-//   const { data } = config;
-//   const newProduct = JSON.parse(data);
 
-//   // Add the new product to the products array
-//   products.push(newProduct);
 
-//   // Return the updated products list as the response
-//   return [200, products];
+// mock.onPost('/api/data/eCommerce/EditProduct').reply((config) => {
+//   const updatedProductData = JSON.parse(config.data); // Extract updated product data from request body
+ 
+//   // Find the index of the product to be updated in the ProductsData array
+//   const index = ProductsData.findIndex((product) => product.id === updatedProductData.id);
+
+//   if (index !== -1) {
+//     // If the product is found, update its data
+//     ProductsData[index] = { ...ProductsData[index], ...updatedProductData };
+//     return [200, ProductsData[index]];
+//   }
+ 
+//   return [404, { error: 'Product not found' }]; 
 // });
+
+
+
+
+
 
 export default ProductsData;
