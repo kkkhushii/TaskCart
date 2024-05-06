@@ -8,13 +8,15 @@ import { useContext, useState } from 'react'
 import NewProductAdd from './NewProductAdd'
 import ProductDetail from './ProductDetail'
 import ProductTableList from '../EcommerceComponent/ProductTableList'
+import ProductEdit from '../EcommerceComponent/ProductEdit'
 function Home() {
-    const { showCheckout, showProductAdd, products, showList } = useContext(ProductContext);
-    const [selectedProduct, setSelectedProduct] = useState(null);
+    const { showCheckout, showProductAdd, products, showList, setSelectedProduct, selectedProduct, EditProducts } = useContext(ProductContext);
+    // const [selectedProduct, setSelectedProduct] = useState(null);
 
     const handleProductClick = (product) => {
         setSelectedProduct(product);
     };
+
 
     return (
 
@@ -22,9 +24,9 @@ function Home() {
             {showProductAdd && <NewProductAdd />}
             {showCheckout && <ProductCheckout />}
             {showList && <ProductTableList />}
+            {EditProducts && <ProductEdit product={selectedProduct} onClose={() => setSelectedProduct(null)} />}
 
-
-            {(!showProductAdd && !showCheckout && !showList) && (
+            {(!showProductAdd && !showCheckout && !showList && !EditProducts) && (
                 <>
                     <Drawer
                         variant="permanent"
@@ -50,7 +52,6 @@ function Home() {
                             <ProductList products={products} onProductClick={handleProductClick} />
                         ) : (
                             <ProductDetail product={selectedProduct} onClose={() => setSelectedProduct(null)} />
-
                         )}
 
                     </Box>

@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 
 function Header() {
 
-    const { toggleCheckout, toggleProductAdd, toggleListopen } = useContext(ProductContext);
+    const { toggleCheckout, toggleProductAdd, toggleListopen, setSelectedProduct, selectedProduct, toogleEditopen } = useContext(ProductContext);
 
 
 
@@ -38,7 +38,7 @@ function Header() {
                 <Box sx={{ display: "flex", gap: "3px" }}>
                     <Button variant="contained" color="primary" sx={{ marginTop: 1 }} onClick={toggleCheckout}>Add to Cart </Button>
                     <Button variant="contained" color="primary" sx={{ marginTop: 1 }} onClick={toggleProductAdd}>Add Products</Button>
-                    <Button variant="contained" color="primary" sx={{ marginTop: 1 }} >Edit Products</Button>
+                    <Button variant="contained" color="primary" sx={{ marginTop: 1 }} onClick={toogleEditopen}>Edit Products</Button>
                     <Button variant="contained" color="primary" sx={{ marginTop: 1 }} onClick={toggleListopen}>List</Button>
 
                 </Box>

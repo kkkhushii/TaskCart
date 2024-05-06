@@ -17,6 +17,7 @@ const config = {
     showProductAdd: false,
     newProducts: [],
     showList: false,
+    EditProducts: false,
 }
 
 export const ProductProvider = ({ children }) => {
@@ -33,6 +34,10 @@ export const ProductProvider = ({ children }) => {
     const [showProductAdd, setShowProductAdd] = useState(config.showProductAdd);
     const [showList, setShowList] = useState(config.showList);
     const [newProducts, setNewProducts] = useState(config.newProducts);
+    const [EditProducts, setEditProducts] = useState(config.EditProducts);
+
+    const [selectedProduct, setSelectedProduct] = useState(null);
+
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -150,22 +155,32 @@ export const ProductProvider = ({ children }) => {
         setShowCheckout(true);
         setShowProductAdd(false);
         setShowList(false);
+        setEditProducts(false);
     };
 
     const toggleProductAdd = () => {
         setShowProductAdd(true);
         setShowCheckout(false);
         setShowList(false);
+        setEditProducts(false);
+
+
     };
     const toggleListopen = () => {
         setShowList(true);
         setShowCheckout(false);
         setShowProductAdd(false);
-
+        setEditProducts(false);
+    }
+    const toogleEditopen = () => {
+        setEditProducts(true);
+        setShowList(false);
+        setShowCheckout(false);
+        setShowProductAdd(false);
     }
 
     return (
-        <ProductContext.Provider value={{ products, searchProducts, showList, toggleListopen, selectedCategory, newProducts, addProduct, showProductAdd, toggleProductAdd, updateSortBy, selectCategory, showCheckout, incrementQuantity, decrementQuantity, removeFromCart, toggleCheckout, addToCart, loading, filteredAndSortedProducts, selectedColor, selectColor, setSelectedGender, updatePriceRange, selectGender, sortBy, priceRange, setPriceRange, cart }}>
+        <ProductContext.Provider value={{ products, toogleEditopen, EditProducts, setEditProducts, setSelectedProduct, selectedProduct, searchProducts, showList, toggleListopen, selectedCategory, newProducts, addProduct, showProductAdd, toggleProductAdd, updateSortBy, selectCategory, showCheckout, incrementQuantity, decrementQuantity, removeFromCart, toggleCheckout, addToCart, loading, filteredAndSortedProducts, selectedColor, selectColor, setSelectedGender, updatePriceRange, selectGender, sortBy, priceRange, setPriceRange, cart }}>
             {children}
         </ProductContext.Provider>
     );
