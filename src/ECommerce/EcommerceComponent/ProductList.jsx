@@ -13,6 +13,7 @@ import { useContext } from 'react'
 import { ProductContext } from '../../ContextApi/EcommerceContext'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import emptyCart from '../../assets/Products/empty-shopping-cart.svg';
+import ProductEdit from './ProductEdit';
 
 function ProductList({ onProductClick }) {
 

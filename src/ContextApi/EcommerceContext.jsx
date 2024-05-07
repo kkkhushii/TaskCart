@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from 'react';
 import axios from 'axios'
+import ProductsData from '../api/ecommerceApi/ProductData';
 
 export const ProductContext = createContext();
 
@@ -23,6 +24,7 @@ const config = {
 
 export const ProductProvider = ({ children }) => {
     const [products, setProducts] = useState(config.products);
+
     const [searchProduct, setSearchProduct] = useState(config.searchProduct);
     const [selectedCategory, setSelectedCategory] = useState(config.selectedCategory);
     const [sortBy, setSortBy] = useState(config.sortBy);
@@ -36,7 +38,7 @@ export const ProductProvider = ({ children }) => {
     const [showList, setShowList] = useState(config.showList);
     const [newProducts, setNewProducts] = useState(config.newProducts);
     const [EditProducts, setEditProducts] = useState(config.EditProducts);
-    const [selectedProduct, setSelectedProduct] = useState(null);
+    const [selectedProduct, setSelectedProduct] = useState(config.selectedProduct);
 
 
     useEffect(() => {
@@ -44,6 +46,7 @@ export const ProductProvider = ({ children }) => {
             try {
                 const response = await axios.get('/api/data/eCommerce/ProductsData');
                 setProducts(response.data);
+
                 setLoading(false);
 
             } catch (error) {
@@ -69,6 +72,7 @@ export const ProductProvider = ({ children }) => {
     };
 
     const filterProducts = (product) => {
+
         const matchesSearch = product.title.toLowerCase().includes(searchProduct.toLowerCase());
         const matchesCategory = selectedCategory === 'All' || product.category.includes(selectedCategory.toLowerCase());
         const withinPriceRange = (priceRange === 'All') ||
@@ -97,7 +101,11 @@ export const ProductProvider = ({ children }) => {
     };
 
     const filteredProducts = products.filter(filterProducts);
+
     const filteredAndSortedProducts = sortProducts(filteredProducts);
+
+
+
 
     const selectCategory = (category) => setSelectedCategory(category);
 
@@ -124,7 +132,7 @@ export const ProductProvider = ({ children }) => {
     };
 
     const updateProduct = (productId, updatedProductData) => {
-
+        console.log(updatedProductData);
         setProducts((prevProducts) =>
             prevProducts.map((product) =>
                 product.id === productId ? { ...product, ...updatedProductData } : product
@@ -160,6 +168,19 @@ export const ProductProvider = ({ children }) => {
     // };
 
 
+    // const updateProduct = (productId, updatedProductData) => {
+    //     // Find the index of the product in the products array
+    //     const productIndex = products.findIndex(product => product.id === productId);
+
+    //     // If product exists, update its data
+    //     if (productIndex !== -1) {
+    //         const updatedProducts = [...products];
+    //         updatedProducts[productIndex] = { ...updatedProducts[productIndex], ...updatedProductData };
+    //         setProducts(updatedProducts);
+    //     } else {
+    //         console.error('Product not found');
+    //     }
+    // };
 
 
     const addToCart = (productWithQuantity) => {
@@ -223,7 +244,7 @@ export const ProductProvider = ({ children }) => {
     }
 
     return (
-        <ProductContext.Provider value={{ products, toogleEditopen, EditProducts, updateProduct, setEditProducts, setSelectedProduct, selectedProduct, searchProducts, showList, toggleListopen, selectedCategory, newProducts, addProduct, showProductAdd, toggleProductAdd, updateSortBy, selectCategory, showCheckout, incrementQuantity, decrementQuantity, removeFromCart, toggleCheckout, addToCart, loading, filteredAndSortedProducts, selectedColor, selectColor, setSelectedGender, updatePriceRange, selectGender, sortBy, priceRange, setPriceRange, cart }}>
+        <ProductContext.Provider value={{ products, toogleEditopen, EditProducts, setEditProducts, updateProduct, setSelectedProduct, selectedProduct, searchProducts, showList, toggleListopen, selectedCategory, newProducts, addProduct, showProductAdd, toggleProductAdd, updateSortBy, selectCategory, showCheckout, incrementQuantity, decrementQuantity, removeFromCart, toggleCheckout, addToCart, loading, filteredAndSortedProducts, selectedColor, selectColor, setSelectedGender, updatePriceRange, selectGender, sortBy, priceRange, setPriceRange, cart }}>
             {children}
         </ProductContext.Provider>
     );

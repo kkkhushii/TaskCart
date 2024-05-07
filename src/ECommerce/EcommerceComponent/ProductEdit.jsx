@@ -3,41 +3,35 @@ import axios from 'axios';
 import { ProductContext } from '../../ContextApi/EcommerceContext'
 
 function ProductEdit({ productId, productDetails }) {
-    const { editProduct, products, updateProductData, setSelectedProduct, updateProduct } = useContext(ProductContext);
+    const { updateProduct } = useContext(ProductContext);
 
     const [editedProduct, setEditedProduct] = useState({ ...productDetails });
 
 
-
-
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setEditedProduct({ ...editedProduct, [name]: value });
+    };
+    const handleSave = () => {
+        updateProduct(editedProduct.id, editedProduct); // Call updateProduct with edited data
+        console.log('Product edited successfully');
+    };
 
     useEffect(() => {
         setEditedProduct(productDetails); // Use the passed product details
     }, [productDetails]);
 
-    const handleChange = (e) => {
-        setEditedProduct({ ...editedProduct, [e.target.name]: e.target.value });
-    };
 
 
 
     // const handleSave = async () => {
     //     try {
-    //         await editProduct(editedProduct); // Pass the productId and updated product data
+    //         await updateProduct(productId, editedProduct); // Update the product
     //         console.log('Product edited successfully');
     //     } catch (error) {
     //         console.error('Error editing product:', error);
     //     }
     // };
-    // const handleSave = async () => { }
-
-
-
-    const handleSave = () => {
-
-        updateProduct(productId, editedProduct);
-        console.log('Updated Product Data:', editedProduct);
-    };
 
     if (!editedProduct) {
         return <div>Loading...</div>;
@@ -63,6 +57,7 @@ function ProductEdit({ productId, productDetails }) {
             </form>
 
         </div>
+
 
 
 
