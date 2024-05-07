@@ -28,35 +28,10 @@ function ProductSidebar({ colors }) {
 
         return uniqueValues;
     }
-    // const getUniqueData = (data, attr) => {
-    //     let uniqueValues = data.map((curElem) => curElem[attr]);
 
-    //     // Check if the attribute is 'colors' to handle flattening
-    //     if (attr === 'colors') {
-    //         uniqueValues = uniqueValues.flat();
-    //     } else if (attr === 'price') { // Handle price ranges
-    //         const prices = uniqueValues.map((price) => {
-    //             if (price < 50) {
-    //                 return '$0 - $50';
-    //             } else if (price < 100) {
-    //                 return '$50 - $100';
-    //             } else if (price < 200) {
-    //                 return '$100 - $200';
-    //             } else {
-    //                 return '$200+';
-    //             }
-    //         });
-
-    //         uniqueValues = prices;
-    //     }
-
-    //     // Return unique values including 'All'
-    //     return ['All', ...new Set(uniqueValues)];
-    // };
 
     const filterbyGender = getUniqueData(products, 'gender');
     const filterbyColors = getUniqueData(products, 'colors');
-    // const filterbyPrice = getUniqueData(products, 'price');
 
 
     return (
@@ -196,9 +171,6 @@ function ProductSidebar({ colors }) {
                 </Stack>
             </Box >
             <Divider></Divider>
-
-            {/* Reset button*/}
-
             <Box p={3}>
                 <Button variant="contained" fullWidth onClick={handleResetFilters}>
                     Reset Filters

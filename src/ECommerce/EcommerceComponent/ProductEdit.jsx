@@ -1,8 +1,8 @@
-import React, { useContext, useState, useEffect } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import axios from 'axios';
 import { ProductContext } from '../../ContextApi/EcommerceContext'
 
-function ProductEdit({ productId, productDetails }) {
+function ProductEdit({ productDetails }) {
     const { updateProduct } = useContext(ProductContext);
 
     const [editedProduct, setEditedProduct] = useState({ ...productDetails });
@@ -20,8 +20,6 @@ function ProductEdit({ productId, productDetails }) {
     useEffect(() => {
         setEditedProduct(productDetails); // Use the passed product details
     }, [productDetails]);
-
-
 
 
     // const handleSave = async () => {
@@ -55,13 +53,7 @@ function ProductEdit({ productId, productDetails }) {
                 ))}
                 <button type="submit">Save</button>
             </form>
-
         </div>
-
-
-
-
-
 
     )
 }

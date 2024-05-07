@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Typography, IconButton, Divider, Grid, Button, ButtonGroup } from '@mui/material'
+import { Box, Typography, IconButton, Divider, Grid } from '@mui/material'
 import { ProductContext } from '../../ContextApi/EcommerceContext';
 import { useContext } from 'react'
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -8,7 +8,6 @@ import RemoveIcon from '@mui/icons-material/Remove';
 
 function ProductCheckout() {
     const { cart, removeFromCart, decrementQuantity, incrementQuantity } = useContext(ProductContext);
-
 
     const handleRemoveFromCart = (productId) => {
         removeFromCart(productId);
@@ -47,8 +46,6 @@ function ProductCheckout() {
         <Box p={3} width={'100vw'}>
             <Typography variant="h4" gutterBottom>Products</Typography>
             <Divider />
-
-
             <Box mt={3} >
                 {cart.map((product) => (
                     <Box key={product.id} mb={2}>
@@ -86,7 +83,6 @@ function ProductCheckout() {
                 ))}
             </Box>
 
-            {/* Order Summary */}
             <Box mt={3}>
                 <Typography variant="h6" gutterBottom>Order Summary</Typography>
                 <Grid container justifyContent="space-between">

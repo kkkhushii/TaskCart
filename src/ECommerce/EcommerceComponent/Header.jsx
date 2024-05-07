@@ -4,14 +4,12 @@ import Breadcrumbs from '@mui/material/Breadcrumbs';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import { Box, Button } from '@mui/material';
 import image1 from '../../assets/ChatBc.png'
-import ProductCheckout from './ProductCheckout';
 import { ProductContext } from '../../ContextApi/EcommerceContext'
-import { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useContext } from 'react';
 
 function Header() {
 
-    const { toggleCheckout, toggleProductAdd, toggleListopen, setSelectedProduct, selectedProduct, toogleEditopen } = useContext(ProductContext);
+    const { toggleCheckout, toggleProductAdd, toggleListopen, toogleEditopen } = useContext(ProductContext);
 
 
 

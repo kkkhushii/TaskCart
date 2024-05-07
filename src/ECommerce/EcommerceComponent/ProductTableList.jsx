@@ -1,5 +1,5 @@
-import React, { useContext, useState } from 'react'
-import { Box, Toolbar, Typography, Button, Paper, TableContainer, TableBody, Table, TableCell, TableHead, TextField, TablePagination, TableRow, TableSortLabel, Checkbox, IconButton, Tooltip } from '@mui/material'
+import { useContext, useState } from 'react'
+import { Box, Toolbar, Typography, Paper, TableContainer, TableBody, Table, TableCell, TableHead, TablePagination, TableRow, Checkbox, IconButton, Tooltip } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete';
 import { ProductContext } from '../../ContextApi/EcommerceContext';
 import { styled } from '@mui/material/styles';
@@ -42,25 +42,7 @@ function ProductTableList() {
         setPage(0);
     };
 
-    // const handleClick = (event, id) => {
-    //     if (
-    //         event.target.tagName === 'BUTTON' ||
-    //         event.target.tagName === 'INPUT'
 
-    //     ) {
-    //         return;
-    //     }
-    //     const selectedIndex = selected.indexOf(id);
-    //     let newSelected = [];
-
-    //     if (selectedIndex === -1) {
-    //         newSelected = newSelected.concat(selected, id);
-    //     } else {
-    //         newSelected = selected.filter((itemId) => itemId !== id);
-    //     }
-
-    //     setSelected(newSelected);
-    // };
     const handleClick = (event, id) => {
         if (
             event.target.tagName === 'BUTTON' ||
@@ -123,10 +105,7 @@ function ProductTableList() {
                         <TableHead>
                             <TableRow>
                                 <StyledTableCell padding="checkbox">
-
-
                                     <Checkbox checked={selectAll} onChange={handleSelectAllClick} /> </StyledTableCell>
-
                                 <StyledTableCell align="left">Product</StyledTableCell>
                                 <StyledTableCell align="left">Date</StyledTableCell>
                                 <StyledTableCell align="left">Status</StyledTableCell>
@@ -197,7 +176,7 @@ function ProductTableList() {
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
             </Paper>
-            {/* Your existing table density switch */}
+
         </Box >
     )
 }

@@ -13,14 +13,11 @@ import { useContext } from 'react'
 import { ProductContext } from '../../ContextApi/EcommerceContext'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import emptyCart from '../../assets/Products/empty-shopping-cart.svg';
-import ProductEdit from './ProductEdit';
+
 
 function ProductList({ onProductClick }) {
 
-    const { filteredAndSortedProducts, selectCategory, updateSortBy, updatePriceRange, selectGender, loading, newProducts, addToCart, products } = useContext(ProductContext);
-    const allProducts = [products, ...newProducts];
-
-
+    const { filteredAndSortedProducts, selectCategory, updateSortBy, updatePriceRange, selectGender, loading, addToCart, } = useContext(ProductContext);
 
     const handleResetFilters = () => {
         selectCategory('All');
@@ -89,12 +86,9 @@ function ProductList({ onProductClick }) {
                         </Grid>
                     )}
 
-
                 </Grid >
-
             )
             }
-
         </>
 
     )

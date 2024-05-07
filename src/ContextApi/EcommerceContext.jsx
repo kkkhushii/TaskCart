@@ -1,6 +1,5 @@
 import { createContext, useState, useEffect } from 'react';
 import axios from 'axios'
-import ProductsData from '../api/ecommerceApi/ProductData';
 
 export const ProductContext = createContext();
 
@@ -168,19 +167,6 @@ export const ProductProvider = ({ children }) => {
     // };
 
 
-    // const updateProduct = (productId, updatedProductData) => {
-    //     // Find the index of the product in the products array
-    //     const productIndex = products.findIndex(product => product.id === productId);
-
-    //     // If product exists, update its data
-    //     if (productIndex !== -1) {
-    //         const updatedProducts = [...products];
-    //         updatedProducts[productIndex] = { ...updatedProducts[productIndex], ...updatedProductData };
-    //         setProducts(updatedProducts);
-    //     } else {
-    //         console.error('Product not found');
-    //     }
-    // };
 
 
     const addToCart = (productWithQuantity) => {

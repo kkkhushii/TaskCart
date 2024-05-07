@@ -17,6 +17,5 @@ function kanban() {
 
     )
 
-
 }
 export default kanban

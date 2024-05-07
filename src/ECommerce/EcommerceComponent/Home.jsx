@@ -11,16 +11,15 @@ import ProductTableList from '../EcommerceComponent/ProductTableList'
 import ProductEdit from '../EcommerceComponent/ProductEdit'
 function Home() {
     const { showCheckout, showProductAdd, products, showList, setSelectedProduct, selectedProduct, EditProducts } = useContext(ProductContext);
-    // const [selectedProduct, setSelectedProduct] = useState(null);
+
     const [selectedProductDetails, setSelectedProductDetails] = useState(null);
 
     // const handleProductClick = (product) => {
     //     setSelectedProduct(product);
     // };
     const handleProductClick = (productId, productDetails) => {
-        setSelectedProduct(productId); // Set the selected product ID
-        setSelectedProductDetails(productDetails);  // Set the selected product ID
-
+        setSelectedProduct(productId);
+        setSelectedProductDetails(productDetails);
     };
 
     return (
@@ -52,7 +51,7 @@ function Home() {
                     </Drawer>
 
                     <Box>
-                        {/* <ProductList /> */}
+
                         {!selectedProduct ? (
                             <ProductList products={products} onProductClick={handleProductClick} />
                         ) : (

@@ -1,11 +1,9 @@
 import { ProductContext } from '../../ContextApi/EcommerceContext'
 import { useState, useContext } from 'react';
-import { Button, TextField, Typography, Rating, Box, Grid, Select, MenuItem, FormControl, InputLabel, IconButton, Divider } from '@mui/material';
+import { Button, TextField, Typography, Rating, Box, Select, MenuItem, FormControl, InputLabel, Divider } from '@mui/material';
 import { filterCategory } from '../../api/ecommerceApi/ProductFilter'
 function NewProductAdd() {
-    const { addProduct, products } = useContext(ProductContext);
-
-
+    const { addProduct } = useContext(ProductContext);
 
     const [formData, setFormData] = useState({
         title: '',
@@ -15,7 +13,6 @@ function NewProductAdd() {
         salesPrice: '',
         rating: 0,
         category: '',
-
 
     });
 
@@ -41,7 +38,6 @@ function NewProductAdd() {
         });
 
     };
-
 
     return (
         <Box>
@@ -133,8 +129,6 @@ function NewProductAdd() {
                 <Button type="submit" variant="contained" color="primary" mt={2}>Add Product</Button>
             </form>
         </Box>
-
-
 
     )
 }

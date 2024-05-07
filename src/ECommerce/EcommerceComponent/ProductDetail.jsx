@@ -103,8 +103,6 @@ function ProductDetail({ product }) {
             </Grid>
         </Box >
 
-
-
     )
 }
 

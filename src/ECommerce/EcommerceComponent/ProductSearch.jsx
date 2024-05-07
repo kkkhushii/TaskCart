@@ -4,10 +4,7 @@ import { useContext } from 'react';
 import { ProductContext } from '../../ContextApi/EcommerceContext'
 
 function ProductSearch() {
-
-
     const { searchProducts } = useContext(ProductContext);
-
 
     return (
         <TextField
