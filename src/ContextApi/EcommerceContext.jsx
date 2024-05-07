@@ -65,7 +65,6 @@ export const ProductProvider = ({ children }) => {
     }, []);
 
 
-
     const removeFromCart = async (productId) => {
         setCart(cart.filter(item => item.id !== productId));
     };
@@ -130,15 +129,15 @@ export const ProductProvider = ({ children }) => {
         }
     };
 
-    const updateProduct = (productId, updatedProductData) => {
-        console.log(updatedProductData);
-        setProducts((prevProducts) =>
-            prevProducts.map((product) =>
-                product.id === productId ? { ...product, ...updatedProductData } : product
-            )
-        );
-        localStorage.setItem('products', JSON.stringify(updatedProductData));
-    };
+    // const updateProduct = (productId, updatedProductData) => {
+    //     console.log(updatedProductData);
+    //     setProducts((prevProducts) =>
+    //         prevProducts.map((product) =>
+    //             product.id === productId ? { ...product, ...updatedProductData } : product
+    //         )
+    //     );
+    //     localStorage.setItem('products', JSON.stringify(updatedProductData));
+    // };
 
 
     // const editProduct = async (updatedProductData) => {
@@ -168,7 +167,9 @@ export const ProductProvider = ({ children }) => {
 
 
 
-
+    const deleteAllProducts = () => {
+        setProducts([]);
+    };
     const addToCart = (productWithQuantity) => {
         const { id, quantity } = productWithQuantity;
         const existingProductIndex = cart.findIndex((item) => item.id === id);
@@ -201,6 +202,11 @@ export const ProductProvider = ({ children }) => {
     };
 
 
+    const deleteProduct = (productId) => {
+        setProducts(products.filter(product => product.id !== productId));
+
+    };
+
     const toggleCheckout = () => {
         setShowCheckout(true);
         setShowProductAdd(false);
@@ -230,7 +236,13 @@ export const ProductProvider = ({ children }) => {
     }
 
     return (
-        <ProductContext.Provider value={{ products, toogleEditopen, EditProducts, setEditProducts, updateProduct, setSelectedProduct, selectedProduct, searchProducts, showList, toggleListopen, selectedCategory, newProducts, addProduct, showProductAdd, toggleProductAdd, updateSortBy, selectCategory, showCheckout, incrementQuantity, decrementQuantity, removeFromCart, toggleCheckout, addToCart, loading, filteredAndSortedProducts, selectedColor, selectColor, setSelectedGender, updatePriceRange, selectGender, sortBy, priceRange, setPriceRange, cart }}>
+        <ProductContext.Provider value={{
+            products, toogleEditopen, EditProducts, setEditProducts, deleteProduct, setSelectedProduct, selectedProduct, searchProducts, showList,
+            toggleListopen, selectedCategory, newProducts, addProduct, showProductAdd, toggleProductAdd,
+            updateSortBy, selectCategory, showCheckout, incrementQuantity, decrementQuantity, removeFromCart, toggleCheckout,
+            addToCart, loading, filteredAndSortedProducts, selectedColor, selectColor, setSelectedGender, updatePriceRange, selectGender, deleteAllProducts,
+            sortBy, priceRange, setPriceRange, cart
+        }}>
             {children}
         </ProductContext.Provider>
     );

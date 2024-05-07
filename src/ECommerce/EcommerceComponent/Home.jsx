@@ -28,7 +28,9 @@ function Home() {
             {showProductAdd && <NewProductAdd />}
             {showCheckout && <ProductCheckout />}
             {showList && <ProductTableList />}
-            {EditProducts && <ProductEdit productId={selectedProduct} productDetails={selectedProductDetails} onClose={() => setSelectedProduct(null)} />}
+            {/* {EditProducts && <ProductEdit productId={selectedProduct} productDetails={selectedProductDetails} onClose={() => setSelectedProduct(null)} />} */}
+            {EditProducts && <ProductEdit />}
+
 
             {(!showProductAdd && !showCheckout && !showList && !EditProducts) && (
                 <>
