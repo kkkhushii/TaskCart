@@ -15,7 +15,6 @@ function App() {
         <Route path="/kanban" element={<Kanban />} />
         <Route path="/ecommerce" element={<Ecommerece />} />
       </Routes>
-
     </>
   )
 }

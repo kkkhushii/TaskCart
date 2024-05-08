@@ -1,59 +1,220 @@
-import { useContext, useState, useEffect } from 'react'
-import axios from 'axios';
+import { useContext, useState } from 'react'
 import { ProductContext } from '../../ContextApi/EcommerceContext'
+import { Button, TextField, Modal, Box, Typography, MenuItem, Grid, Avatar } from '@mui/material';
+import { filterCategory } from '../../api/ecommerceApi/ProductFilter'
 
-function ProductEdit({ productDetails }) {
+
+function ProductEdit({ product, onClose }) {
     const { updateProduct } = useContext(ProductContext);
+    const [updatedProduct, setUpdatedProduct] = useState(product);
 
-    const [editedProduct, setEditedProduct] = useState({ ...productDetails });
-
-
-    const handleChange = (e) => {
+    const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setEditedProduct({ ...editedProduct, [name]: value });
+        setUpdatedProduct(prevState => ({
+            ...prevState,
+            [name]: value,
+        }));
     };
+
     const handleSave = () => {
-        updateProduct(editedProduct.id, editedProduct); // Call updateProduct with edited data
-        console.log('Product edited successfully');
+        updateProduct(product.id, updatedProduct);
+        onClose();
+    };
+    const handleImageUrlChange = (e) => {
+        const imageUrl = e.target.value;
+        setUpdatedProduct(prevState => ({
+            ...prevState,
+            photo: imageUrl,
+        }));
+    };
+    const handleCategoryChange = (e) => {
+        const { value } = e.target;
+        setUpdatedProduct(prevState => ({
+            ...prevState,
+            category: value,
+        }));
     };
 
-    useEffect(() => {
-        setEditedProduct(productDetails); // Use the passed product details
-    }, [productDetails]);
+    const handleColorChange = (e) => {
+        const { value } = e.target;
+        setUpdatedProduct(prevState => ({
+            ...prevState,
+            colors: value.split(',').map(color => color.trim()),
+        }));
+    };
 
 
-    // const handleSave = async () => {
-    //     try {
-    //         await updateProduct(productId, editedProduct); // Update the product
-    //         console.log('Product edited successfully');
-    //     } catch (error) {
-    //         console.error('Error editing product:', error);
-    //     }
-    // };
-
-    if (!editedProduct) {
-        return <div>Loading...</div>;
-    }
     return (
 
-        <div>
-            <h1>Edit Product</h1>
-            <form onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
-
-                {Object.keys(editedProduct).map((fieldName) => (
-                    <label key={fieldName}>
-                        {fieldName.charAt(0).toUpperCase() + fieldName.slice(1)}:
-                        <input
-                            type="text"
-                            name={fieldName}
-                            value={editedProduct[fieldName]}
-                            onChange={(e) => handleChange(e, fieldName)}
+        <Modal open={true} onClose={onClose}>
+            <Box
+                sx={{
+                    position: 'absolute',
+                    width: 600,
+                    bgcolor: 'background.paper',
+                    border: '2px solid #000',
+                    boxShadow: 24,
+                    p: 4,
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                }}
+            >
+                <Typography variant="h6" gutterBottom>Edit Product</Typography>
+                <Grid container spacing={2}>
+                    {/* Left side */}
+                    <Grid item xs={6}>
+                        <TextField
+                            fullWidth
+                            label="ID"
+                            name="id"
+                            value={updatedProduct.id}
+                            InputProps={{
+                                readOnly: true,
+                            }}
+                            sx={{ mb: 2 }}
                         />
-                    </label>
-                ))}
-                <button type="submit">Save</button>
-            </form>
-        </div>
+                        <TextField
+                            fullWidth
+                            label="Title"
+                            name="title"
+                            value={updatedProduct.title}
+                            onChange={handleInputChange}
+                            sx={{ mb: 2 }}
+                        />
+                        <TextField
+                            fullWidth
+                            label="Price"
+                            name="price"
+                            value={updatedProduct.price}
+                            onChange={handleInputChange}
+                            sx={{ mb: 2 }}
+                        />
+                        <TextField
+                            fullWidth
+                            label="salesPrice"
+                            name="salesPrice"
+                            value={updatedProduct.salesPrice}
+                            onChange={handleInputChange}
+                            sx={{ mb: 2 }}
+                        />
+
+                        <TextField
+                            fullWidth
+                            label="Description"
+                            name="description"
+                            value={updatedProduct.description}
+                            onChange={handleInputChange}
+                            multiline
+                            rows={4}
+                            sx={{ mb: 2 }}
+                        />
+
+                    </Grid>
+                    {/* Right side */}
+                    <Grid item xs={6}>
+                        <TextField
+                            fullWidth
+                            label="Discount"
+                            name="discount"
+                            value={updatedProduct.discount}
+                            onChange={handleInputChange}
+                            sx={{ mb: 2 }}
+                        />
+                        <TextField
+                            fullWidth
+                            label="created Date"
+                            name="created"
+                            value={new Date(updatedProduct.created).toLocaleDateString('en-US', {
+                                weekday: 'short',
+                                month: 'short',
+                                day: '2-digit',
+                                year: 'numeric'
+                            })}
+                            onChange={handleInputChange}
+                            sx={{ mb: 2 }}
+                            InputProps={{
+                                readOnly: true,
+                            }}
+                        />
+
+                        {/* <TextField
+                            fullWidth
+                            select
+                            label="stock"
+                            name="stock"
+                            value={updatedProduct.stock}
+                            onChange={handleInputChange}
+                            sx={{ mb: 2 }}
+                        >
+                            {['true', 'false'].map((option) => (
+                                <MenuItem key={option} value={option}>
+                                    {option}
+                                </MenuItem>
+                            ))}
+                        </TextField> */}
+                        <TextField
+                            fullWidth
+                            label="Photo URL"
+                            name="photo"
+                            value={updatedProduct.photo}
+                            onChange={handleImageUrlChange}
+                            sx={{ mb: 2 }}
+                        />
+                        <Avatar alt="Product Image" src={updatedProduct.photo} sx={{ width: 100, height: 100, mb: 2, textAlign: "center" }} />
+
+                        <TextField
+                            fullWidth
+                            select
+                            label="Rating"
+                            name="rating"
+                            value={updatedProduct.rating}
+                            onChange={handleInputChange}
+                            sx={{ mb: 2 }}
+                        >
+                            {[1, 2, 3, 4, 5].map((rating) => (
+                                <MenuItem key={rating} value={rating}>
+                                    {rating}
+                                </MenuItem>
+                            ))}
+                        </TextField>
+                        <TextField
+                            fullWidth
+                            select
+                            label="Category"
+                            name="category"
+                            value={updatedProduct.category}
+                            onChange={handleCategoryChange}
+                            sx={{ mb: 2 }}
+                        >
+                            {filterCategory.map((category) => (
+                                <MenuItem key={category.id} value={category.sort}>
+                                    {category.name}
+                                </MenuItem>
+                            ))}
+                        </TextField>
+                        <TextField
+                            fullWidth
+                            label="Colors"
+                            name="colors"
+                            value={updatedProduct.colors.join(', ')}
+                            onChange={handleColorChange}
+                            sx={{ mb: 2 }}
+                        />
+
+
+                    </Grid>
+                </Grid>
+                <Box display="flex" justifyContent="flex-end" gap="3px">
+
+                    <Button onClick={handleSave} color="primary" variant="contained">Save</Button>
+                    <Button onClick={onClose} color="secondary" variant="contained">Cancel</Button>
+                </Box>
+            </Box>
+        </Modal>
+
+
+
 
     )
 }

@@ -38,6 +38,8 @@ export const ProductProvider = ({ children }) => {
     const [newProducts, setNewProducts] = useState(config.newProducts);
     const [EditProducts, setEditProducts] = useState(config.EditProducts);
     const [selectedProduct, setSelectedProduct] = useState(config.selectedProduct);
+    const [editModalOpen, setEditModalOpen] = useState(false); // State to control edit modal
+    const [selectedProductForEdit, setSelectedProductForEdit] = useState(null);
 
 
     useEffect(() => {
@@ -71,8 +73,11 @@ export const ProductProvider = ({ children }) => {
 
     const filterProducts = (product) => {
 
-        const matchesSearch = product.title.toLowerCase().includes(searchProduct.toLowerCase());
-        const matchesCategory = selectedCategory === 'All' || product.category.includes(selectedCategory.toLowerCase());
+        const matchesSearch = product?.title?.toLowerCase().includes(searchProduct.toLowerCase());
+        const matchesCategory =
+            selectedCategory === 'All' || // Matches if selectedCategory is 'All' or...
+            (product.category && product.category.includes(selectedCategory.toLowerCase()));
+        // const matchesCategory = selectedCategory === 'All' || product.category.includes(selectedCategory.toLowerCase());
         const withinPriceRange = (priceRange === 'All') ||
             (priceRange === '0-50' && product.price <= 50) ||
             (priceRange === '50-100' && product.price > 50 && product.price <= 100) ||
@@ -123,48 +128,11 @@ export const ProductProvider = ({ children }) => {
             const response = await axios.post('/api/data/eCommerce/AddProduct', newProduct);
             const addedProduct = { ...response.data, category };
             setProducts((prevProducts) => [...prevProducts, addedProduct]);
-            localStorage.setItem('products', JSON.stringify([...products, addedProduct]));
+            // localStorage.setItem('products', JSON.stringify([...products, addedProduct]));
         } catch (error) {
             console.error('Error adding product:', error);
         }
     };
-
-    // const updateProduct = (productId, updatedProductData) => {
-    //     console.log(updatedProductData);
-    //     setProducts((prevProducts) =>
-    //         prevProducts.map((product) =>
-    //             product.id === productId ? { ...product, ...updatedProductData } : product
-    //         )
-    //     );
-    //     localStorage.setItem('products', JSON.stringify(updatedProductData));
-    // };
-
-
-    // const editProduct = async (updatedProductData) => {
-    //     try {
-
-    //         console.log('Updated product data:', updatedProductData);
-
-
-    //         const response = await axios.post('/api/data/eCommerce/EditProduct', updatedProductData);
-    //         const updatedProduct = response.data;
-    //         console.log(response);
-
-    //         setProducts((prevProducts) => {
-    //             return prevProducts.map((product) => {
-    //                 if (product.id === updatedProduct.id) {
-    //                     return updatedProduct;
-    //                 } else {
-    //                     return product;
-    //                 }
-    //             });
-    //         });
-
-    //     } catch (error) {
-    //         console.error('Error editing product:', error);
-    //     }
-    // };
-
 
 
     const deleteAllProducts = () => {
@@ -201,7 +169,6 @@ export const ProductProvider = ({ children }) => {
         );
     };
 
-
     const deleteProduct = (productId) => {
         setProducts(products.filter(product => product.id !== productId));
 
@@ -234,14 +201,25 @@ export const ProductProvider = ({ children }) => {
         setShowCheckout(false);
         setShowProductAdd(false);
     }
+    const handleCloseEditModal = () => {
+        setEditModalOpen(false); // Close the edit modal
+        setSelectedProductForEdit(null); // Reset the selected product for edit
+    };
+    const updateProduct = (productId, updatedProductData) => {
+        setProducts(prevProducts =>
+            prevProducts.map(product =>
+                product.id === productId ? { ...product, ...updatedProductData } : product
+            )
+        );
 
+    };
     return (
         <ProductContext.Provider value={{
             products, toogleEditopen, EditProducts, setEditProducts, deleteProduct, setSelectedProduct, selectedProduct, searchProducts, showList,
             toggleListopen, selectedCategory, newProducts, addProduct, showProductAdd, toggleProductAdd,
             updateSortBy, selectCategory, showCheckout, incrementQuantity, decrementQuantity, removeFromCart, toggleCheckout,
             addToCart, loading, filteredAndSortedProducts, selectedColor, selectColor, setSelectedGender, updatePriceRange, selectGender, deleteAllProducts,
-            sortBy, priceRange, setPriceRange, cart
+            sortBy, priceRange, setPriceRange, cart, editModalOpen, setEditModalOpen, selectedProductForEdit, setSelectedProductForEdit, handleCloseEditModal, updateProduct
         }}>
             {children}
         </ProductContext.Provider>

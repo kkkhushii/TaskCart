@@ -13,6 +13,7 @@ import s9 from '../../assets/Products/s9.jpg';
 import s10 from '../../assets/Products/s10.jpg';
 import s11 from '../../assets/Products/s11.jpg';
 import s12 from '../../assets/Products/s12.jpg';
+import { v4 as uuidv4 } from 'uuid';
 
 const chance = new Chance();
 
@@ -233,7 +234,7 @@ let products =  [...ProductsData];
 mock.onPost('/api/data/eCommerce/AddProduct').reply((config) => {
   const { data } = config;
   const newProduct = JSON.parse(data);
-
+  newProduct.id = uuidv4();
   products.push(newProduct);
   try {
     localStorage.setItem('products', JSON.stringify(products));
@@ -244,7 +245,16 @@ mock.onPost('/api/data/eCommerce/AddProduct').reply((config) => {
 });
 
 
-
+// mock.onPost('/api/data/eCommerce/AddProduct').reply((config) => {
+//   const { data } = JSON.parse(config.data);
+//   const newProduct = {
+//     ...data,
+//     id: ProductsData.length + 1, // Generate a unique ID for the new product
+//     created: new Date(), // Set the creation date to the current date
+//   };
+//   ProductsData.push(newProduct); // Add the new product to the existing array
+//   return [200, newProduct]; // Return the new product as the response
+// });
 
 // mock.onPost('/api/data/eCommerce/EditProduct').reply((config) => {
 //   const updatedProductData = JSON.parse(config.data); // Extract updated product data from request body

@@ -21,11 +21,12 @@ import emptyCart from '../../assets/Products/empty-shopping-cart.svg';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useState } from 'react';
+import ProductEdit from '../EcommerceComponent/ProductEdit';
 
 
 function ProductList({ onProductClick }) {
 
-    const { filteredAndSortedProducts, selectCategory, updateSortBy, updatePriceRange, selectGender, loading, addToCart, deleteProduct } = useContext(ProductContext);
+    const { filteredAndSortedProducts, selectCategory, updateSortBy, updatePriceRange, selectGender, loading, addToCart, deleteProduct, selectedProductForEdit, setSelectedProductForEdit, setEditModalOpen, handleCloseEditModal } = useContext(ProductContext);
 
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [selectedProductId, setSelectedProductId] = useState(null);
@@ -56,6 +57,11 @@ function ProductList({ onProductClick }) {
         setSelectedProductId(null);
         setDeleteModalOpen(false);
     };
+
+    const handleEditClick = (product) => {
+        setSelectedProductForEdit(product);
+        setEditModalOpen(true); // Open the edit modal when edit button is clicked
+    };
     return (
         <>
             <Stack direction="row" justifyContent="space-between" pb={4} >
@@ -69,7 +75,6 @@ function ProductList({ onProductClick }) {
             ) : (
                 <Grid container spacing={3}>
                     {filteredAndSortedProducts && filteredAndSortedProducts.length > 0 ? (
-
                         <>
                             {filteredAndSortedProducts.map((product) => (
 
@@ -79,7 +84,6 @@ function ProductList({ onProductClick }) {
                                             <CardMedia component="img" width="100%" image={product.photo || product.image} alt="products" onClick={() => onProductClick(product.id, product)} />
                                             <Tooltip title="Add To Cart" placement="top-end">
                                                 <Fab size="small" color="primary" style={{ position: 'absolute', bottom: '-17px', right: '8px' }}>
-
                                                     <ShoppingCartIcon onClick={() => addToCart({ ...product, quantity: 1 })} />
                                                 </Fab>
                                             </Tooltip>
@@ -109,7 +113,7 @@ function ProductList({ onProductClick }) {
 
                                                 <Tooltip title="Edit">
                                                     <Fab size="small" color="primary">
-                                                        <EditIcon />
+                                                        <EditIcon onClick={() => handleEditClick(product)} />
                                                     </Fab>
                                                 </Tooltip>
                                             </Box>
@@ -148,6 +152,12 @@ function ProductList({ onProductClick }) {
                     <Button onClick={handleDeleteConfirm} autoFocus>Yes</Button>
                 </DialogActions>
             </Dialog>
+
+            {selectedProductForEdit && (
+                <ProductEdit
+                    product={selectedProductForEdit}
+                    onClose={handleCloseEditModal} />
+            )}
         </>
 
     )

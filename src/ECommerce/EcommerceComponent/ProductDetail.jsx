@@ -10,15 +10,14 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { useContext, useState, } from 'react';
-import CheckIcon from '@mui/icons-material/Check';
 import { ProductContext } from '../../ContextApi/EcommerceContext'
+import ProductCheckout from './ProductCheckout';
 
 
 
 function ProductDetail({ product }) {
 
-    const [selectedColor, setSelectedColor] = useState(null);
-    const { addToCart } = useContext(ProductContext);
+    const { addToCart, toggleCheckout } = useContext(ProductContext);
     const [quantity, setQuantity] = useState(0);
 
     if (!product) {
@@ -31,6 +30,10 @@ function ProductDetail({ product }) {
 
     const handleDecrement = () => {
         setQuantity(prevQuantity => Math.max(1, prevQuantity - 1));
+    };
+
+    const handleBuyNow = () => {
+        toggleCheckout();
     };
     return (
 
@@ -76,7 +79,7 @@ function ProductDetail({ product }) {
                         </Box>
                         <Divider></Divider>
 
-                        <Box display="flex" flexWrap="wrap" gap={1}>
+                        {/* <Box display="flex" flexWrap="wrap" gap={1}>
                             <Typography variant="body1" mr={1}>Colors:</Typography>
                             {product.colors.map((color, index) => (
                                 <IconButton
@@ -88,15 +91,33 @@ function ProductDetail({ product }) {
                                         borderRadius: '50%',
                                         marginRight: 1,
                                     }}
-                                    onClick={() => setSelectedColor(color)}
-                                >
-                                    {selectedColor === color && <CheckIcon />}
-                                </IconButton>
+
+                                />
+                            ))}
+                            
+                        </Box> */}
+
+                        <Box display="flex" flexWrap="wrap" gap={1}>
+                            <Typography variant="body1" mr={1}>Colors:</Typography>
+                            {Array.isArray(product.colors) && product.colors.map((color, index) => (
+                                <IconButton
+                                    key={index}
+                                    sx={{
+                                        backgroundColor: color,
+                                        width: 24,
+                                        height: 24,
+                                        borderRadius: '50%',
+                                        marginRight: 1,
+                                    }}
+                                />
+
+
                             ))}
                         </Box>
                         <Box mt={2}>
                             <Button variant="contained" color="primary" onClick={() => addToCart({ ...product, quantity })}> Add to Cart </Button>
-                            <Button variant="contained" color="secondary" sx={{ ml: 1 }}> Buy Now </Button>
+                            <Button variant="contained" color="secondary" sx={{ ml: 1 }} onClick={handleBuyNow}> Buy Now </Button>
+
                         </Box>
                     </Box>
                 </Grid>

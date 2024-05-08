@@ -2,16 +2,20 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
-import { Box, Button } from '@mui/material';
+import { Box, Button, Modal } from '@mui/material';
 import image1 from '../../assets/ChatBc.png'
 import { ProductContext } from '../../ContextApi/EcommerceContext'
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
+import NewProductAdd from './NewProductAdd';
 
 function Header() {
 
     const { toggleCheckout, toggleProductAdd, toggleListopen, toogleEditopen } = useContext(ProductContext);
+    const [AddModalOpen, SetAddModalOpen] = useState(false);
 
-
+    const handleCloseAddModal = () => {
+        SetAddModalOpen(false);
+    };
 
     return (
         <Grid container spacing={2} >
@@ -35,7 +39,8 @@ function Header() {
                 </Typography>
                 <Box sx={{ display: "flex", gap: "3px" }}>
                     <Button variant="contained" color="primary" sx={{ marginTop: 1 }} onClick={toggleCheckout}>Add to Cart </Button>
-                    <Button variant="contained" color="primary" sx={{ marginTop: 1 }} onClick={toggleProductAdd}>Add Products</Button>
+                    <Button variant="contained" color="primary" sx={{ marginTop: 1 }} onClick={() => { SetAddModalOpen(true) }}>Add Products</Button>
+
                     <Button variant="contained" color="primary" sx={{ marginTop: 1 }} onClick={toogleEditopen}>Edit Products</Button>
                     <Button variant="contained" color="primary" sx={{ marginTop: 1 }} onClick={toggleListopen}>List</Button>
 
@@ -45,6 +50,13 @@ function Header() {
             <Box className="IMG-box">
                 <img src={image1} alt='breadcrumbImg' />
             </Box>
+
+
+            {AddModalOpen &&
+                <Box sx={{ width: 400, bgcolor: 'background.paper' }}>
+                    <NewProductAdd open={AddModalOpen} onClose={() => SetAddModalOpen(false)} />
+                </Box>
+            }
 
         </Grid >
     )

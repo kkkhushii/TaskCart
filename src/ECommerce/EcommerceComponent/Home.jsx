@@ -25,7 +25,7 @@ function Home() {
     return (
 
         <Paper component="div">
-            {showProductAdd && <NewProductAdd />}
+            {/* {showProductAdd && <NewProductAdd />} */}
             {showCheckout && <ProductCheckout />}
             {showList && <ProductTableList />}
             {/* {EditProducts && <ProductEdit productId={selectedProduct} productDetails={selectedProductDetails} onClose={() => setSelectedProduct(null)} />} */}
