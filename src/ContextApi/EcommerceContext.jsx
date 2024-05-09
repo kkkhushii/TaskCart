@@ -19,11 +19,12 @@ const config = {
     showList: false,
     EditProducts: false,
     selectedProduct: null,
+    editModalOpen: false,
+    selectedProductForEdit: null,
 }
 
 export const ProductProvider = ({ children }) => {
     const [products, setProducts] = useState(config.products);
-
     const [searchProduct, setSearchProduct] = useState(config.searchProduct);
     const [selectedCategory, setSelectedCategory] = useState(config.selectedCategory);
     const [sortBy, setSortBy] = useState(config.sortBy);
@@ -33,21 +34,16 @@ export const ProductProvider = ({ children }) => {
     const [loading, setLoading] = useState(config.loading);
     const [cart, setCart] = useState(config.cart);
     const [showCheckout, setShowCheckout] = useState(config.showCheckout);
-    const [showProductAdd, setShowProductAdd] = useState(config.showProductAdd);
     const [showList, setShowList] = useState(config.showList);
-    const [newProducts, setNewProducts] = useState(config.newProducts);
-    const [EditProducts, setEditProducts] = useState(config.EditProducts);
     const [selectedProduct, setSelectedProduct] = useState(config.selectedProduct);
-    const [editModalOpen, setEditModalOpen] = useState(false); // State to control edit modal
-    const [selectedProductForEdit, setSelectedProductForEdit] = useState(null);
-
+    const [editModalOpen, setEditModalOpen] = useState(config.editModalOpen);
+    const [selectedProductForEdit, setSelectedProductForEdit] = useState(config.selectedProductForEdit);
 
     useEffect(() => {
         const fetchProducts = async () => {
             try {
                 const response = await axios.get('/api/data/eCommerce/ProductsData');
                 setProducts(response.data);
-
                 setLoading(false);
 
             } catch (error) {
@@ -55,29 +51,14 @@ export const ProductProvider = ({ children }) => {
                 setLoading(false);
             }
         };
-        const storedProducts = localStorage.getItem('products');
-        if (storedProducts) {
-            setProducts(JSON.parse(storedProducts));
-            setLoading(false);
-        } else {
-
-            fetchProducts();
-        }
-
+        fetchProducts();
     }, []);
 
 
-    const removeFromCart = async (productId) => {
-        setCart(cart.filter(item => item.id !== productId));
-    };
 
     const filterProducts = (product) => {
-
         const matchesSearch = product?.title?.toLowerCase().includes(searchProduct.toLowerCase());
-        const matchesCategory =
-            selectedCategory === 'All' || // Matches if selectedCategory is 'All' or...
-            (product.category && product.category.includes(selectedCategory.toLowerCase()));
-        // const matchesCategory = selectedCategory === 'All' || product.category.includes(selectedCategory.toLowerCase());
+        const matchesCategory = selectedCategory === 'All' || (product.category && product.category.includes(selectedCategory.toLowerCase()));
         const withinPriceRange = (priceRange === 'All') ||
             (priceRange === '0-50' && product.price <= 50) ||
             (priceRange === '50-100' && product.price > 50 && product.price <= 100) ||
@@ -107,9 +88,6 @@ export const ProductProvider = ({ children }) => {
 
     const filteredAndSortedProducts = sortProducts(filteredProducts);
 
-
-
-
     const selectCategory = (category) => setSelectedCategory(category);
 
     const updateSortBy = (sortOption) => setSortBy(sortOption);
@@ -128,16 +106,12 @@ export const ProductProvider = ({ children }) => {
             const response = await axios.post('/api/data/eCommerce/AddProduct', newProduct);
             const addedProduct = { ...response.data, category };
             setProducts((prevProducts) => [...prevProducts, addedProduct]);
-            // localStorage.setItem('products', JSON.stringify([...products, addedProduct]));
         } catch (error) {
             console.error('Error adding product:', error);
         }
     };
 
 
-    const deleteAllProducts = () => {
-        setProducts([]);
-    };
     const addToCart = (productWithQuantity) => {
         const { id, quantity } = productWithQuantity;
         const existingProductIndex = cart.findIndex((item) => item.id === id);
@@ -150,6 +124,10 @@ export const ProductProvider = ({ children }) => {
             const productWithCategory = { ...productWithQuantity, categoryName: productWithQuantity.category, quantity: (quantity || 1) };
             setCart((prevCart) => [...prevCart, productWithCategory]);
         }
+    };
+
+    const removeFromCart = async (productId) => {
+        setCart(cart.filter(item => item.id !== productId));
     };
 
 
@@ -171,40 +149,26 @@ export const ProductProvider = ({ children }) => {
 
     const deleteProduct = (productId) => {
         setProducts(products.filter(product => product.id !== productId));
-
+    };
+    const deleteAllProducts = () => {
+        setProducts([]);
     };
 
     const toggleCheckout = () => {
         setShowCheckout(true);
-        setShowProductAdd(false);
         setShowList(false);
-        setEditProducts(false);
     };
 
-    const toggleProductAdd = () => {
-        setShowProductAdd(true);
-        setShowCheckout(false);
-        setShowList(false);
-        setEditProducts(false);
-
-
-    };
     const toggleListopen = () => {
         setShowList(true);
         setShowCheckout(false);
-        setShowProductAdd(false);
-        setEditProducts(false);
     }
-    const toogleEditopen = () => {
-        setEditProducts(true);
-        setShowList(false);
-        setShowCheckout(false);
-        setShowProductAdd(false);
-    }
+
     const handleCloseEditModal = () => {
-        setEditModalOpen(false); // Close the edit modal
-        setSelectedProductForEdit(null); // Reset the selected product for edit
+        setEditModalOpen(false);
+        setSelectedProductForEdit(null);
     };
+
     const updateProduct = (productId, updatedProductData) => {
         setProducts(prevProducts =>
             prevProducts.map(product =>
@@ -215,8 +179,7 @@ export const ProductProvider = ({ children }) => {
     };
     return (
         <ProductContext.Provider value={{
-            products, toogleEditopen, EditProducts, setEditProducts, deleteProduct, setSelectedProduct, selectedProduct, searchProducts, showList,
-            toggleListopen, selectedCategory, newProducts, addProduct, showProductAdd, toggleProductAdd,
+            products, deleteProduct, setSelectedProduct, selectedProduct, searchProducts, showList, toggleListopen, selectedCategory, addProduct,
             updateSortBy, selectCategory, showCheckout, incrementQuantity, decrementQuantity, removeFromCart, toggleCheckout,
             addToCart, loading, filteredAndSortedProducts, selectedColor, selectColor, setSelectedGender, updatePriceRange, selectGender, deleteAllProducts,
             sortBy, priceRange, setPriceRange, cart, editModalOpen, setEditModalOpen, selectedProductForEdit, setSelectedProductForEdit, handleCloseEditModal, updateProduct

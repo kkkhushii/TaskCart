@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react'
 import { ProductContext } from '../../ContextApi/EcommerceContext'
-import { Button, TextField, Modal, Box, Typography, MenuItem, Grid, Avatar } from '@mui/material';
+import { Button, TextField, Modal, Box, Typography, MenuItem, Grid, Avatar, FormControl, InputLabel, Select } from '@mui/material';
 import { filterCategory } from '../../api/ecommerceApi/ProductFilter'
 
 
@@ -62,7 +62,6 @@ function ProductEdit({ product, onClose }) {
             >
                 <Typography variant="h6" gutterBottom>Edit Product</Typography>
                 <Grid container spacing={2}>
-                    {/* Left side */}
                     <Grid item xs={6}>
                         <TextField
                             fullWidth
@@ -109,9 +108,16 @@ function ProductEdit({ product, onClose }) {
                             rows={4}
                             sx={{ mb: 2 }}
                         />
-
+                        <FormControl sx={{ mb: 2 }}>
+                            <InputLabel id="category-label">Category</InputLabel>
+                            <Select labelId="category-label" id="category" name="category" label="Category" value={updatedProduct.category} onChange={handleCategoryChange}>
+                                <MenuItem value="">Select Category</MenuItem>
+                                {filterCategory.map((category) => (
+                                    <MenuItem key={category.id} value={category.sort}>{category.name}</MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
                     </Grid>
-                    {/* Right side */}
                     <Grid item xs={6}>
                         <TextField
                             fullWidth
@@ -137,22 +143,6 @@ function ProductEdit({ product, onClose }) {
                                 readOnly: true,
                             }}
                         />
-
-                        {/* <TextField
-                            fullWidth
-                            select
-                            label="stock"
-                            name="stock"
-                            value={updatedProduct.stock}
-                            onChange={handleInputChange}
-                            sx={{ mb: 2 }}
-                        >
-                            {['true', 'false'].map((option) => (
-                                <MenuItem key={option} value={option}>
-                                    {option}
-                                </MenuItem>
-                            ))}
-                        </TextField> */}
                         <TextField
                             fullWidth
                             label="Photo URL"
@@ -178,21 +168,7 @@ function ProductEdit({ product, onClose }) {
                                 </MenuItem>
                             ))}
                         </TextField>
-                        <TextField
-                            fullWidth
-                            select
-                            label="Category"
-                            name="category"
-                            value={updatedProduct.category}
-                            onChange={handleCategoryChange}
-                            sx={{ mb: 2 }}
-                        >
-                            {filterCategory.map((category) => (
-                                <MenuItem key={category.id} value={category.sort}>
-                                    {category.name}
-                                </MenuItem>
-                            ))}
-                        </TextField>
+
                         <TextField
                             fullWidth
                             label="Colors"
@@ -201,12 +177,9 @@ function ProductEdit({ product, onClose }) {
                             onChange={handleColorChange}
                             sx={{ mb: 2 }}
                         />
-
-
                     </Grid>
                 </Grid>
                 <Box display="flex" justifyContent="flex-end" gap="3px">
-
                     <Button onClick={handleSave} color="primary" variant="contained">Save</Button>
                     <Button onClick={onClose} color="secondary" variant="contained">Cancel</Button>
                 </Box>

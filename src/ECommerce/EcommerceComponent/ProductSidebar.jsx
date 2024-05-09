@@ -9,14 +9,12 @@ import CheckIcon from '@mui/icons-material/Check';
 function ProductSidebar({ colors }) {
     const { selectCategory, sortBy, updateSortBy, updatePriceRange, priceRange, selectGender, selectedGender, selectColor, selectedCategory, selectedColor, products } = useContext(ProductContext);
 
-
     const handleResetFilters = () => {
         selectCategory('All');
         updateSortBy('newest');
         updatePriceRange('All');
         selectGender('All');
     };
-
 
     function getUniqueData(data, attr) {
         let uniqueValues = data.map((curElem) => curElem[attr]);
@@ -25,10 +23,8 @@ function ProductSidebar({ colors }) {
         }
 
         uniqueValues = ['All', ...new Set(uniqueValues)];
-
         return uniqueValues;
     }
-
 
     const filterbyGender = getUniqueData(products, 'gender');
     const filterbyColors = getUniqueData(products, 'colors');
@@ -47,8 +43,6 @@ function ProductSidebar({ colors }) {
                 } else if (filter.devider) {
                     return <Divider key={filter.id} />;
                 }
-
-
                 return (
                     <ListItemButton
                         sx={{ mb: 1, mx: 3, borderRadius: '7px', backgroundColor: selectedCategory === filter.sort ? 'rgb(236, 242, 255)' : 'transparent', }}
@@ -73,9 +67,7 @@ function ProductSidebar({ colors }) {
                         <ListItemButton
                             sx={{ mb: 1, mx: 3, borderRadius: '7px', backgroundColor: sortBy === filter.value ? 'rgb(236, 242, 255)' : 'transparent', }}
                             key={filter.id}
-                            onClick={() => updateSortBy(filter.value)}
-
-                        >
+                            onClick={() => updateSortBy(filter.value)} >
                             <ListItemIcon sx={{ minWidth: '30px' }}>
                                 <filter.icon stroke="1.5" size={19} />
                             </ListItemIcon>
@@ -176,7 +168,6 @@ function ProductSidebar({ colors }) {
                     Reset Filters
                 </Button>
             </Box>
-
         </List >
     )
 }

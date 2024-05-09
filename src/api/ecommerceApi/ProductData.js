@@ -245,16 +245,6 @@ mock.onPost('/api/data/eCommerce/AddProduct').reply((config) => {
 });
 
 
-// mock.onPost('/api/data/eCommerce/AddProduct').reply((config) => {
-//   const { data } = JSON.parse(config.data);
-//   const newProduct = {
-//     ...data,
-//     id: ProductsData.length + 1, // Generate a unique ID for the new product
-//     created: new Date(), // Set the creation date to the current date
-//   };
-//   ProductsData.push(newProduct); // Add the new product to the existing array
-//   return [200, newProduct]; // Return the new product as the response
-// });
 
 // mock.onPost('/api/data/eCommerce/EditProduct').reply((config) => {
 //   const updatedProductData = JSON.parse(config.data); // Extract updated product data from request body

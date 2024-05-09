@@ -27,7 +27,6 @@ import ProductEdit from '../EcommerceComponent/ProductEdit';
 function ProductList({ onProductClick }) {
 
     const { filteredAndSortedProducts, selectCategory, updateSortBy, updatePriceRange, selectGender, loading, addToCart, deleteProduct, selectedProductForEdit, setSelectedProductForEdit, setEditModalOpen, handleCloseEditModal } = useContext(ProductContext);
-
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [selectedProductId, setSelectedProductId] = useState(null);
 
@@ -37,11 +36,6 @@ function ProductList({ onProductClick }) {
         updatePriceRange('All');
         selectGender('All');
     }
-
-    // const handleDeleteClick = (productId) => {
-    //     deleteProduct(productId);
-
-    // };
 
     const handleDeleteClick = (productId) => {
         setSelectedProductId(productId);
@@ -60,7 +54,7 @@ function ProductList({ onProductClick }) {
 
     const handleEditClick = (product) => {
         setSelectedProductForEdit(product);
-        setEditModalOpen(true); // Open the edit modal when edit button is clicked
+        setEditModalOpen(true);
     };
     return (
         <>
@@ -78,9 +72,9 @@ function ProductList({ onProductClick }) {
                         <>
                             {filteredAndSortedProducts.map((product) => (
 
-                                <Grid item xs={12} lg={4} md={4} sm={6} key={product.id}>
-                                    <Card>
-                                        <Box position="relative">
+                                <Grid item xs={12} lg={4} md={4} sm={6} key={product.id} >
+                                    <Card sx={{ cursor: "pointer" }}>
+                                        <Box position="relative" >
                                             <CardMedia component="img" width="100%" image={product.photo || product.image} alt="products" onClick={() => onProductClick(product.id, product)} />
                                             <Tooltip title="Add To Cart" placement="top-end">
                                                 <Fab size="small" color="primary" style={{ position: 'absolute', bottom: '-17px', right: '8px' }}>
@@ -91,8 +85,6 @@ function ProductList({ onProductClick }) {
                                         <CardContent>
                                             <Box display="flex" justifyContent="space-between" alignItems="center">
                                                 <Typography variant="h6" p={0}>{product.title}</Typography>
-
-
                                             </Box>
                                             <Box display="flex" alignItems="center">
                                                 <Typography variant="subtitle1">${product.price}</Typography>
@@ -137,11 +129,9 @@ function ProductList({ onProductClick }) {
                             </Box>
                         </Grid>
                     )}
-
                 </Grid >
             )
             }
-
             <Dialog open={deleteModalOpen} onClose={handleDeleteCancel}>
                 <DialogTitle>Delete Product</DialogTitle>
                 <DialogContent>

@@ -60,8 +60,7 @@ function ProductCheckout() {
                                 <IconButton onClick={() => handleRemoveFromCart(product.id)}>
                                     <DeleteIcon />
                                 </IconButton>
-
-                                <Box display="flex" alignItems="center">
+                                <Box display="flex" alignItems="center" border="1px solid black" width="max-content">
                                     <IconButton onClick={() => decrementQuantity(product.id)} >
                                         <RemoveIcon />
                                     </IconButton>
@@ -71,10 +70,8 @@ function ProductCheckout() {
                                     </IconButton>
                                 </Box>
                             </Grid>
-
                             <Grid item xs={2}>
                                 <Typography variant="body1"> ${product.price * product.quantity}</Typography>
-
                                 <Typography variant="body2" color="textSecondary">Quantity: {product.quantity}</Typography>
                             </Grid>
 
@@ -82,7 +79,6 @@ function ProductCheckout() {
                     </Box>
                 ))}
             </Box>
-
             <Box mt={3}>
                 <Typography variant="h6" gutterBottom>Order Summary</Typography>
                 <Grid container justifyContent="space-between">
@@ -104,10 +100,6 @@ function ProductCheckout() {
                 </Grid>
             </Box>
         </Box>
-
-
-
-
     );
 
 }
