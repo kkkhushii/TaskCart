@@ -17,7 +17,7 @@ function Home() {
     };
 
     return (
-        <Paper component="div">
+        <Paper component="div" style={{ display: "flex" }}>
             {showCheckout && <ProductCheckout />}
             {showList && <ProductTableList />}
             {(!showCheckout && !showList) && (

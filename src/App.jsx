@@ -12,11 +12,9 @@ function App() {
     <>
 
       <Routes>
+        <Route path="/" element={<Ecommerece />} />
         <Route path="/kanban" element={<Kanban />} />
         <Route path="/ecommerce" element={<Ecommerece />} />
-        <Route path="/" element={<Ecommerece />} />
-
-
       </Routes>
     </>
   )
