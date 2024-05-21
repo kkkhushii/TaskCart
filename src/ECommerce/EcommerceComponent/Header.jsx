@@ -21,7 +21,9 @@ function Header() {
                 <Typography variant="h6" component="h6"> </Typography>
                 <Typography variant="nav" component="nav" className='nav-box'>
                     <Breadcrumbs aria-label="breadcrumb" separator="">
-                        <Link href="/ecommerce" underline="none">
+                        {/* <Link href="/ecommerce" underline="none"> */}
+                        <Link href="/" underline="none">
+
                             <Typography variant="p" component="p">Home</Typography>
                         </Link>
                         <FiberManualRecordIcon sx={{ fontSize: 8 }} />
