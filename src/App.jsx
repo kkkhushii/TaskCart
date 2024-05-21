@@ -14,6 +14,9 @@ function App() {
       <Routes>
         <Route path="/kanban" element={<Kanban />} />
         <Route path="/ecommerce" element={<Ecommerece />} />
+        <Route path="/" element={<Ecommerece />} />
+
+
       </Routes>
     </>
   )
