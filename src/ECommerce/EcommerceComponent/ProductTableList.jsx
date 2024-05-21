@@ -82,14 +82,11 @@ function ProductTableList() {
     const handleChangePage = (event, newPage) => {
         setCurrentPage(newPage);
     };
-
     const startIndex = (currentPage - 1) * rowsPerPage;
     const endIndex = Math.min(startIndex + rowsPerPage, products.length);
     const paginatedProducts = products.slice(startIndex, endIndex);
     return (
-
         <Box sx={{ width: '100%', margin: 'auto' }}>
-
             {showConfirmation && (
                 <Dialog open={showConfirmation} onClose={handleCancelDelete}>
                     <DialogTitle>Delete Product</DialogTitle>
@@ -105,15 +102,14 @@ function ProductTableList() {
                 </Dialog>
             )}
             <TableContainer component={Paper}>
-                <Table>
+                <Table >
                     <TableHead>
                         <TableRow >
                             <TableCell>
                                 <Checkbox
                                     checked={selected.length === products.length}
                                     indeterminate={selected.length > 0 && selected.length < products.length}
-                                    onChange={handleSelectAll}
-                                />
+                                    onChange={handleSelectAll} />
                             </TableCell>
                             <TableCell>Product</TableCell>
                             <TableCell>Date</TableCell>
@@ -129,7 +125,7 @@ function ProductTableList() {
                     </TableHead>
                     <TableBody>
                         {paginatedProducts.map((product) => (
-                            <TableRow key={product.id}>
+                            <TableRow key={product.id} >
                                 <TableCell>
                                     <Checkbox
                                         checked={selected.includes(product.id)}
@@ -167,8 +163,7 @@ function ProductTableList() {
             <Pagination
                 count={Math.ceil(products.length / rowsPerPage)}
                 page={currentPage}
-                onChange={handleChangePage}
-            />
+                onChange={handleChangePage} />
             {editModalOpen && (
                 <ProductEdit
                     product={products.find(product => product.id === selectedProductId)}
